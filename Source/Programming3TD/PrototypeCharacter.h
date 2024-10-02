@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "PrototypeCharacter.generated.h"
 
 
@@ -25,6 +26,9 @@ public:
 	/*
 	 *Components
 	 */
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* PrototypeSpringArm;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UCameraComponent* PrototypeCameraComponent;
@@ -45,9 +49,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* TargetAction;
+
 	void Move(const FInputActionValue& Value);
 
 	void LookAround(const FInputActionValue& Value);
+
+	void Target();
 
 protected:
 	// Called when the game starts or when spawned
