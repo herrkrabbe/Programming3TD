@@ -59,8 +59,8 @@ private:
 	/*
 	* The BuildingSlot that is the end node for the A* algorithm.
 	*/
-	UPROPERTY(BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ABuildingSlot> EndNode;
+	//UPROPERTY(BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
+	//TObjectPtr<ABuildingSlot> EndNode;
 
 
 protected:
@@ -76,20 +76,9 @@ public:
 	* @return ThreatLevel + DistanceToEnd
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual double GetValue();
+	virtual double GetValue(ABuildingSlot* endNode);
 
-	/*
-	* Set the EndNode variable, and calculate the DistanceToEnd value.
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual void SetEndNode(ABuildingSlot* newEndNode);
 
-	/*
-	* Get the end node
-	* @return Pointer to the end node BuildingSlot
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual ABuildingSlot* GetEndNode();
 
 	/*
 	* Can this BuildingSlot be built on?

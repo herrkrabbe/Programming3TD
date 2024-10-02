@@ -19,8 +19,6 @@ ABuildingSlot::ABuildingSlot()
 void ABuildingSlot::BeginPlay()
 {
 	Super::BeginPlay();
-
-	SetEndNode(this);
 	
 }
 
@@ -31,21 +29,11 @@ void ABuildingSlot::Tick(float DeltaTime)
 
 }
 
-double ABuildingSlot::GetValue()
+double ABuildingSlot::GetValue(ABuildingSlot* endNode)
 {
-	return ThreatLevel + DistanceToEnd;
+	return ThreatLevel + FVector::Dist(this->GetActorLocation(), endNode->GetActorLocation());;
 }
 
-void ABuildingSlot::SetEndNode(ABuildingSlot* newEndNode)
-{
-	this->EndNode = newEndNode;
-	DistanceToEnd = FVector::Dist(this->GetActorLocation(), newEndNode->GetActorLocation());
-}
-
-ABuildingSlot* ABuildingSlot::GetEndNode()
-{
-	return EndNode;
-}
 
 
 bool ABuildingSlot::CanBuild()
