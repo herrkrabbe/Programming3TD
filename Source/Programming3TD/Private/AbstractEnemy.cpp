@@ -8,6 +8,11 @@ AAbstractEnemy::AAbstractEnemy()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	queueIndex = 0;
+	isAlive = 0;
+	speed = 10;
+	healthMax = 1;
+	healthCurrent = healthMax;
 
 }
 
@@ -22,6 +27,11 @@ void AAbstractEnemy::BeginPlay()
 void AAbstractEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (isAlive)
+	{
+		MoveToNextNode(DeltaTime);
+	}
 
 }
 
@@ -50,3 +60,47 @@ void AAbstractEnemy::Spawn()
 	this->SetActorLocation(this->pathQueue[0]->GetActorLocation());
 }
 
+double AAbstractEnemy::DistanceToNextNode() const
+{
+	TObjectPtr<ABuildingSlot> nextNode = this->pathQueue[this->queueIndex];
+	return FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation());
+}
+
+int32 AAbstractEnemy::GetQueueIndex() const
+{
+	return queueIndex;
+}
+
+bool AAbstractEnemy::operator<(const AAbstractEnemy& other) const
+{
+	if (this->queueIndex > other.queueIndex)
+		return true;
+
+	if (DistanceToNextNode() > other.DistanceToNextNode())
+		return true;
+
+	return false;
+}
+
+void AAbstractEnemy::TeleportGlobal(FVector newLocation)
+{
+	this->SetActorLocation(newLocation);
+}
+
+void AAbstractEnemy::MoveToNextNode(float DeltaTime)
+{
+	if (this->queueIndex >= this->pathQueue.Num())
+	{
+		return;
+	}
+
+	TObjectPtr<ABuildingSlot> nextNode = this->pathQueue[this->queueIndex];
+	FVector direction = nextNode->GetActorLocation() - this->GetActorLocation();
+	direction.Normalize();
+	this->SetActorLocation(this->GetActorLocation() + direction * speed * DeltaTime);
+
+	if (FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation()) < 1)
+	{
+		this->queueIndex++;
+	}
+}

@@ -71,4 +71,18 @@ public:
 	*/
 	void Spawn();
 
+	double DistanceToNextNode() const;
+
+	int32 GetQueueIndex() const;
+
+	/*
+	* An enemy is less than another enemu if they are closer to the end of the path.
+	* 
+	* This function assumes that every enemy has the same path.
+	*/
+	bool operator<(const AAbstractEnemy& other) const;
+
+	void TeleportGlobal(FVector newLocation);
+
+	void MoveToNextNode(float DeltaTime);
 };
