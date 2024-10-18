@@ -5,8 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <BuildingSlot.h>
-#include "AbstractWaveManager.generated.h"
 
+#include <AbstractEnemy.h>
+#include "AbstractWaveManager.generated.h"
 
 UCLASS(Abstract)
 class PROGRAMMING3TD_API AAbstractWaveManager : public AActor
@@ -32,7 +33,7 @@ private:
 	* Enemies are spawned in the order they are in the stack.
 
 	*/
-	TArray<TObjectPtr<AActor>> EnemiesInWaveStack;
+	TArray<TObjectPtr<AAbstractEnemy>> EnemiesInWaveStack;
 
 	/*
 	* When an enemy dies, it is added to the DeadEnemyStack.
@@ -46,7 +47,7 @@ private:
 	* This stack becomes EnemiesInWaveStack at the end of the wave, to prepare
 	* for the next wave.
 	*/
-	TArray<TObjectPtr<AActor>> DeadEnemyStack;
+	TArray<TObjectPtr<AAbstractEnemy>> DeadEnemyStack;
 
 	/*
 	* The number of enemies in the wave. Value is set at the beginning of the game

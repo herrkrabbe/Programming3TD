@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include <BuildingSlot.h>
+#include "Containers/Deque.h"
 #include "AbstractEnemy.generated.h"
 
 class USphereComponent;
@@ -37,33 +38,32 @@ protected:
 	* Don't change elements of this array directly, in case Unreal Engine
 	* does not make a clone of the array.
 	*/
-	UPROPERTY(BlueprintReadWrite)
-	TArray<TObjectPtr<ABuildingSlot>> pathQueue;
+	TDeque<TObjectPtr<ABuildingSlot>> pathQueue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 healthCurrent;
+	int64 healthCurrent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 healthMax;
+	int64 healthMax;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 queueIndex;
+	int64 queueIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isAlive;
 
 public:
-	void SetPathQueue(TArray<TObjectPtr<ABuildingSlot>> PathQueue);
+	void SetPathQueue(TDeque<TObjectPtr<ABuildingSlot>> PathQueue);
 
 	/*
 	* Function to attack this enemy.
 	* 
 	* @return true if the enemy is killed, false otherwise.
 	*/
-	virtual bool AttackThis(int32 damage);
+	virtual bool AttackThis(int64 damage);
 
 	/*
 	* Function to spawn this enemy.
@@ -73,7 +73,7 @@ public:
 
 	double DistanceToNextNode() const;
 
-	int32 GetQueueIndex() const;
+	int64 GetQueueIndex() const;
 
 	/*
 	* An enemy is less than another enemu if they are closer to the end of the path.

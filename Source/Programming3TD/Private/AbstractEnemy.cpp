@@ -35,12 +35,12 @@ void AAbstractEnemy::Tick(float DeltaTime)
 
 }
 
-void AAbstractEnemy::SetPathQueue(TArray<TObjectPtr<ABuildingSlot>> PathQueue)
+void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<ABuildingSlot>> PathQueue)
 {
 	this->pathQueue = PathQueue;
 }
 
-bool AAbstractEnemy::AttackThis(int32 damage)
+bool AAbstractEnemy::AttackThis(int64 damage)
 {
 	this->healthCurrent -= damage;
 	if (this->healthCurrent <= 0)
@@ -66,7 +66,7 @@ double AAbstractEnemy::DistanceToNextNode() const
 	return FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation());
 }
 
-int32 AAbstractEnemy::GetQueueIndex() const
+int64 AAbstractEnemy::GetQueueIndex() const
 {
 	return queueIndex;
 }
