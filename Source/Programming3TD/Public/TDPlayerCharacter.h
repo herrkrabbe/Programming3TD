@@ -10,13 +10,14 @@
 #include "TDPlayerCharacter.generated.h"
 
 UCLASS()
-class ATDPlayerCharacter : public ACharacter
+class PROGRAMMING3TD_API ATDPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	ATDPlayerCharacter();
+
 
 	/*
 	 *Components
