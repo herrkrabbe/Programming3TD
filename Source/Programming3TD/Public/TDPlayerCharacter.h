@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Programming3TD/PrototypeCharacter.h"
+
 #include "TDPlayerCharacter.generated.h"
 
 UCLASS()
