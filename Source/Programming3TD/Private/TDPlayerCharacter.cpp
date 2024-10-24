@@ -9,6 +9,7 @@ ATDPlayerCharacter::ATDPlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	CameraSpringArm->SetupAttachment(GetRootComponent());
 
@@ -18,6 +19,7 @@ ATDPlayerCharacter::ATDPlayerCharacter()
 
 	CharacterMesh = GetMesh();
 }
+
 
 // Called when the game starts or when spawned
 void ATDPlayerCharacter::BeginPlay()
@@ -45,7 +47,7 @@ void ATDPlayerCharacter::BeginPlay()
 	{
 		UE_LOG(LogTemp, Log, TEXT("Something didn't work"));
 	}
-	
+
 }
 
 // Called every frame
@@ -90,7 +92,7 @@ void ATDPlayerCharacter::LookAround(const FInputActionValue& Value)
 }
 void ATDPlayerCharacter::Target()
 {
-	ECollisionChannel StandardCollisionChannel;
+	TEnumAsByte<ECollisionChannel> StandardCollisionChannel;
 	FHitResult TargetResults;
 
 	GetLocalViewingPlayerController()->GetHitResultUnderCursor(StandardCollisionChannel, false, TargetResults);
@@ -104,3 +106,4 @@ void ATDPlayerCharacter::Target()
 	}
 
 }
+
