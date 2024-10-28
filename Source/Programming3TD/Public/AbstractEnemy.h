@@ -69,6 +69,7 @@ public:
 	* Function to spawn this enemy.
 	* Called by wave manager when the enemy is spawned.
 	*/
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
 	void Spawn();
 
 	double DistanceToNextNode() const;
@@ -85,4 +86,5 @@ public:
 	void TeleportGlobal(FVector newLocation);
 
 	void MoveToNextNode(float DeltaTime);
+
 };
