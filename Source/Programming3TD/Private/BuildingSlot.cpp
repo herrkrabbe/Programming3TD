@@ -2,6 +2,7 @@
 
 
 #include "BuildingSlot.h"
+#include "AbstractTower.h"
 
 // Sets default values
 ABuildingSlot::ABuildingSlot()
@@ -37,13 +38,22 @@ double ABuildingSlot::GetValue(ABuildingSlot* endNode)
 
 
 bool ABuildingSlot::CanBuild()
-{
+{	//If there is no building, returns false
 	return hasBuilding;
 }
 
 bool ABuildingSlot::Build()
 {
-	return false; //TODO
+	//Only builds if there is no building already on the building slot
+	if (CanBuild())
+		return false;
+
+	ChildTower = GetWorld()->SpawnActor<AAbstractTower>(TowerClass, GetActorLocation(), GetActorRotation());
+	hasBuilding = true;
+	ThreatLevel += ChildTower->ThreatLevel;
+
+	return true;
+
 }
 
 bool ABuildingSlot::isAdjacent(ABuildingSlot* otherBuildingSlot)

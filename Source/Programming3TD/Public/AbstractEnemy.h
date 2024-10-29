@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include <BuildingSlot.h>
+#include <GraphNode.h>
 #include "Containers/Deque.h"
 #include "AbstractEnemy.generated.h"
 
