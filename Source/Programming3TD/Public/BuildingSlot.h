@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "AbstractTower.h"
 #include "BuildingSlot.generated.h"
 
 /*
@@ -24,6 +25,18 @@ public:
 	// Sets default values for this actor's properties
 	ABuildingSlot();
 
+	/*
+	 *Creating class based off AAbstractTower in order to spawn it
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
+	TSubclassOf<AAbstractTower> TowerClass;
+
+	/*
+	 *Reference to tower on BuildPlot in order to get the ThreatLevel used for the heuristic
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tower")
+	AAbstractTower* ChildTower = nullptr;
+
 private:
 	/*
 	* DistanceToEnd is an underestimated estimation of the cost to reach the end node.
@@ -42,7 +55,7 @@ private:
 	* Bool to check if the BuildingSlot has a building on it.
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building", meta=(AllowPrivateAccess="true"))
-	bool hasBuilding = 0;
+	bool hasBuilding = false;
 
 	/*
 	* A Map storing which BuildingSlots are adjacent to this BuildingSlot.
@@ -61,6 +74,7 @@ private:
 	*/
 	//UPROPERTY(BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
 	//TObjectPtr<ABuildingSlot> EndNode;
+
 
 
 protected:

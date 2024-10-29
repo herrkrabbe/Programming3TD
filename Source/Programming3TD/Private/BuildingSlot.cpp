@@ -37,13 +37,22 @@ double ABuildingSlot::GetValue(ABuildingSlot* endNode)
 
 
 bool ABuildingSlot::CanBuild()
-{
-	return hasBuilding;
+{	//If there is no building, returns true
+	return !hasBuilding;
 }
 
 bool ABuildingSlot::Build()
 {
-	return false; //TODO
+	//Only builds if there is no building already on the building slot
+	if (CanBuild())
+	{
+		ChildTower = GetWorld()->SpawnActor<AAbstractTower>(TowerClass, GetActorLocation(), GetActorRotation());
+		hasBuilding = true;
+		ThreatLevel += ChildTower->ThreatLevel;
+
+		return ChildTower;
+	}
+	return false;
 }
 
 bool ABuildingSlot::isAdjacent(ABuildingSlot* otherBuildingSlot)
