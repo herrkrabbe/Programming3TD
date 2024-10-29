@@ -10,7 +10,7 @@ AAbstractEnemy::AAbstractEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	queueIndex = 0;
 	isAlive = 0;
-	speed = 10;
+	speed = 100;
 	healthMax = 1;
 	healthCurrent = healthMax;
 
@@ -37,7 +37,12 @@ void AAbstractEnemy::Tick(float DeltaTime)
 
 void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<ABuildingSlot>> PathQueue)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Setting pathqueue"));
 	this->pathQueue = PathQueue;
+	if (pathQueue.IsEmpty()) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to set PathQueue"));
+
+	}
 }
 
 bool AAbstractEnemy::AttackThis(int64 damage)
@@ -52,8 +57,10 @@ bool AAbstractEnemy::AttackThis(int64 damage)
 
 void AAbstractEnemy::Spawn()
 {
-	if (pathQueue.IsEmpty()) return;
-
+	if (pathQueue.IsEmpty()) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("PathQueue is empty!"));
+		return;
+	}
 	this->healthCurrent = this->healthMax;
 	this->isAlive = 1;
 	this->queueIndex = 0;
