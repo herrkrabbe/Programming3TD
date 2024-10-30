@@ -43,6 +43,16 @@ void ATDPlayerController::SetMaxHP(int64 newMaxHP)
 	if (HPCurrent > HPMax) HPCurrent = HPMax;
 }
 
+void ATDPlayerController::StartWave()
+{
+	if (!HasWaveManager())
+	{
+		return;
+	}
+
+	WaveManager->StartWave();
+}
+
 void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)
 {
 	if (!HasWaveManager())

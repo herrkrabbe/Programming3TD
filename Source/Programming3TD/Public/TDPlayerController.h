@@ -41,6 +41,21 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Setters")
 	void SetMaxHP(int64 newMaxHP);
+	
+	/*
+	* Function called to tell the controller the wave has ended
+	*/
+	UFUNCTION(BlueprintImplementableEvent, Category = "Game")
+	void WaveEnded();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Game")
+	void GameEnded();
+
+	/*
+	* Tells wave manager to start the wave.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Game")
+	void StartWave();
 
 	/*
 	* Adds a dead enemy to the wave manager.
