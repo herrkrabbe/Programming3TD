@@ -42,6 +42,9 @@ void AAbstractWaveManager::StartWave()
 
 	//TODO: check if pathfinding algorithm was successful
 
+	EnemiesInWaveStack = DeadEnemyStack;
+	DeadEnemyStack.Empty();
+
 	AddNewEnemiesToWave();
 	EnemiesInWave = EnemiesInWaveStack.Num();
 
