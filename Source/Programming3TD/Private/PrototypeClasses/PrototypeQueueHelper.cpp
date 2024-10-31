@@ -25,7 +25,7 @@ void APrototypeQueueHelper::Tick(float DeltaTime)
 
 }
 
-void APrototypeQueueHelper::AddToQueue(ABuildingSlot* slot)
+void APrototypeQueueHelper::AddToQueue(AGraphNode* slot)
 {
 	queue.PushLast(slot);
 }

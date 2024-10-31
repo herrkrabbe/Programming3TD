@@ -35,7 +35,7 @@ void AAbstractEnemy::Tick(float DeltaTime)
 
 }
 
-void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<ABuildingSlot>> PathQueue)
+void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Setting pathqueue"));
 	this->pathQueue = PathQueue;
@@ -69,7 +69,7 @@ void AAbstractEnemy::Spawn()
 
 double AAbstractEnemy::DistanceToNextNode() const
 {
-	TObjectPtr<ABuildingSlot> nextNode = this->pathQueue[this->queueIndex];
+	TObjectPtr<AGraphNode> nextNode = this->pathQueue[this->queueIndex];
 	return FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation());
 }
 
@@ -101,7 +101,7 @@ void AAbstractEnemy::MoveToNextNode(float DeltaTime)
 		return;
 	}
 
-	TObjectPtr<ABuildingSlot> nextNode = this->pathQueue[this->queueIndex];
+	TObjectPtr<AGraphNode> nextNode = this->pathQueue[this->queueIndex];
 	FVector direction = nextNode->GetActorLocation() - this->GetActorLocation();
 	direction.Normalize();
 	this->SetActorLocation(this->GetActorLocation() + direction * speed * DeltaTime);

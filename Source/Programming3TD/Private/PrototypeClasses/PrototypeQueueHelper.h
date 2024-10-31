@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Containers/Deque.h"
-#include <BuildingSlot.h>
+#include <GraphNode.h>
 
 #include <AbstractEnemy.h>
 #include "PrototypeQueueHelper.generated.h"
@@ -26,10 +26,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	TDeque<TObjectPtr<ABuildingSlot>> queue;
+	TDeque<TObjectPtr<AGraphNode>> queue;
 
 	UFUNCTION(BlueprintCallable)
-	void AddToQueue(ABuildingSlot* slot);
+	void AddToQueue(AGraphNode* slot);
 
 	UFUNCTION(BlueprintCallable)
 	void SetEnemyQueue(AAbstractEnemy* enemy);
