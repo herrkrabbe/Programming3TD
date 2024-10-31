@@ -3,6 +3,10 @@
 
 #include "TDPlayerCharacter.h"
 
+#include <TDPlayerController.h>
+
+#include "BuildingSlot.h"
+
 // Sets default values
 ATDPlayerCharacter::ATDPlayerCharacter()
 {
@@ -97,13 +101,13 @@ void ATDPlayerCharacter::Target()
 
 	GetLocalViewingPlayerController()->GetHitResultUnderCursor(StandardCollisionChannel, false, TargetResults);
 
-	if (AActor* TargetActor = Cast<ATDPlayerCharacter>(TargetResults.GetActor()))
+	if (ATDPlayerController* PlayerController = Cast<ATDPlayerController>(GetLocalViewingPlayerController()))
 	{
-		//TargetActor->Build()
-		/*
-		 *From here you just need the Build function in the BuildPlot, also changing the cast to BuildPlot instead of ATDPlayerCharacter
-		 */
-	}
+		if (ABuildingSlot* TargetActor = Cast<ABuildingSlot>(TargetResults.GetActor()))
+		{
+			TargetActor->Build();
 
+		}
+	}
 }
 

@@ -38,7 +38,7 @@ protected:
 	* Don't change elements of this array directly, in case Unreal Engine
 	* does not make a clone of the array.
 	*/
-	TDeque<TObjectPtr<ABuildingSlot>> pathQueue;
+	TDeque<TObjectPtr<AGraphNode>> pathQueue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double speed;
@@ -56,7 +56,7 @@ protected:
 	bool isAlive;
 
 public:
-	void SetPathQueue(TDeque<TObjectPtr<ABuildingSlot>> PathQueue);
+	void SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue);
 
 	/*
 	* Function to attack this enemy.
