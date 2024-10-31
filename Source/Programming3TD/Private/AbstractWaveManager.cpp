@@ -59,7 +59,7 @@ void AAbstractWaveManager::EndWave()
 	TObjectPtr<APlayerController> GenericController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	TObjectPtr<ATDPlayerController> TDController = Cast<ATDPlayerController>(GenericController.Get());
 
-	if (TDController.IsNull()) return;
+	if (!TDController) return;
 
 	// Tell the controller the wave has ended
 	TDController.Get()->WaveEnded();
