@@ -50,17 +50,23 @@ private:
 	TArray<TObjectPtr<AAbstractEnemy>> DeadEnemyStack;
 
 	/*
-	* The number of enemies in the wave. Value is set at the beginning of the game
-	and at the end of every wave.
+	* The number of enemies in the wave. Value is set at the beginning of every wave.
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wave", meta = (AllowPrivateAccess = "true"))
-	int64 EnemiesInWave = 2;
+	int64 EnemiesInWave;
 
 	/*
 	* Is the wave ongoing?
 	*/
 	UPROPERTY(BlueprintReadWrite, Category = "Wave", meta = (AllowPrivateAccess = "true"))
 	bool bIsWaveActive = false;
+
+
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
+	int64 NewEnemiesPerWave;
+
+	TDeque<TObjectPtr<AAbstractEnemy>> NewEnemiesQueue;
 
 public:
 
@@ -96,5 +102,14 @@ public:
 	/*
 	* Function to add an enemy to the DeadEnemyStack. Called by the playercontroller.
 	*/
-	void AddDeadEnemy(TObjectPtr<AActor> enemy);
+	void AddDeadEnemy(TObjectPtr<AAbstractEnemy> enemy);
+
+	/*
+	* Adds a new enemy to the NewEnemyQueue, but only if the wave is not running.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void AddNewEnemy(AAbstractEnemy* newEnemy);
+
+private:
+	int64 AddNewEnemiesToWave();
 };
