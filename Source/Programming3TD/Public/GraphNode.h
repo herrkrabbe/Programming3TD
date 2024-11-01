@@ -67,6 +67,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Graph")
 	virtual double GetValue(AGraphNode* endNode);
 
+	virtual double GetThreatLevel() const;
 
 
 	/*

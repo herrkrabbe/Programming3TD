@@ -30,6 +30,11 @@ double AGraphNode::GetValue(AGraphNode* endNode)
 	return ThreatLevel + FVector::Dist(this->GetActorLocation(), endNode->GetActorLocation());;
 }
 
+double AGraphNode::GetThreatLevel() const
+{
+	return ThreatLevel;
+}
+
 
 bool AGraphNode::isAdjacent(AGraphNode* otherBuildingSlot)
 {
