@@ -61,6 +61,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, Category = "Wave", meta = (AllowPrivateAccess = "true"))
 	bool bIsWaveActive = false;
 
+	TDeque<TObjectPtr<AGraphNode>> Path;
+
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
@@ -78,13 +80,13 @@ public:
 	* The BuildingSlot where the enemies spawn.
 	*/
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<ABuildingSlot> StartNode = nullptr;
+	TObjectPtr<AGraphNode> StartNode = nullptr;
 
 	/*
 	* The BuildingSlot where the enemies go.
 	*/
 	UPROPERTY(BlueprintReadWrite)
-	TObjectPtr<ABuildingSlot> EndNode = nullptr;
+	TObjectPtr<AGraphNode> EndNode = nullptr;
 
 	/*
 	* Function to start a wave. Can be called by the player.
@@ -110,6 +112,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void AddNewEnemy(AAbstractEnemy* newEnemy);
 
+	/*
+	* A test function to spawn an enemy.
+	* Adds the enemy to the EnemiesInWaveStack and immediately spawns it.
+	*/
+	UFUNCTION(BlueprintCallable, Category="Prototyping")
+	void SpawnEnemyPrototypeFunction(AAbstractEnemy* enemy);
+
+	/*
+	* Creates and sets the Path.
+	* 
+	* @return True if the path was created successfully.
+	* @return False if the path could not be created.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	bool CreatePath();
+
 private:
 	int64 AddNewEnemiesToWave();
+
+	/*
+	* Sets the path of the next enemy and then spawns it.
+	*/
+	void SpawnNextEnemy();
 };
