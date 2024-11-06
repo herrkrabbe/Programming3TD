@@ -14,6 +14,7 @@ class PROGRAMMING3TD_API SearchNode
 private: //variables
 	TObjectPtr<SearchNode> Parent;
 	TObjectPtr<AGraphNode> State;
+	int64 Identity;
 	float Heuristic;
 	float Cost;
 	int64 Depth;

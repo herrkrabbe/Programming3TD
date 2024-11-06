@@ -40,6 +40,8 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 
 		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
+			if (neighbour == CurrentNode->GetState()) continue; //skip if the neighbour is self
+
 			SearchNode neighbourNode(neighbour, end, identity, CurrentNode);
 			identity++;
 

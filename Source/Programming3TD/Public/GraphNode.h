@@ -15,26 +15,14 @@ public:
 	// Sets default values for this actor's properties
 	AGraphNode();
 
-private:
-	/*
-	* DistanceToEnd is an underestimated estimation of the cost to reach the end node.
-	* It is used together with the ThreatLevel to determine the weighting (Value) of this node
-	*/
-	UPROPERTY(BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
-	double DistanceToEnd = 0;
-
+protected:
 	/*
 	* ThreatLevel is the additional cost of this node. Buildings affect the BuildingSlot's ThreatLevel.
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
 	double ThreatLevel = 0;
 
-	/*
-	* Bool to check if the BuildingSlot has a building on it.
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building", meta = (AllowPrivateAccess = "true"))
-	bool hasBuilding = false;
-
+private:
 	/*
 	* A Map storing which BuildingSlots are adjacent to this BuildingSlot.
 	*/

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-
+#include "GraphNode.h"
 #include "BuildingSlot.generated.h"
 
 class AAbstractTower;
@@ -18,7 +18,7 @@ class AAbstractTower;
 * for the A* algorithm.
 */
 UCLASS()
-class PROGRAMMING3TD_API ABuildingSlot : public AActor
+class PROGRAMMING3TD_API ABuildingSlot : public AGraphNode
 {
 	GENERATED_BODY()
 	
@@ -27,30 +27,12 @@ public:
 	ABuildingSlot();
 
 private:
-	/*
-	* DistanceToEnd is an underestimated estimation of the cost to reach the end node.
-	* It is used together with the ThreatLevel to determine the weighting (Value) of this node
-	*/
-	UPROPERTY(BlueprintReadWrite, Category="Graph", meta = (AllowPrivateAccess = "true"))
-	double DistanceToEnd = 0;
-
-	/*
-	* ThreatLevel is the additional cost of this node. Buildings affect the BuildingSlot's ThreatLevel.
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
-	double ThreatLevel = 0;
 
 	/*
 	* Bool to check if the BuildingSlot has a building on it.
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building", meta=(AllowPrivateAccess="true"))
 	bool hasBuilding = false;
-
-	/*
-	* A Map storing which BuildingSlots are adjacent to this BuildingSlot.
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Graph", meta = (AllowPrivateAccess = "true"))
-	TMap<TObjectPtr<ABuildingSlot>, TObjectPtr<ABuildingSlot>> AdjacentMap;
 
 	/*
 	* Auxiliary array to AdjacencyMap. When a new BuildingSlot is added to the AdjacencyMap, it is also added to this array.
@@ -86,15 +68,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	/*
-	* Get the value (weight) of the BuildingSlot.
-	* @return ThreatLevel + DistanceToEnd
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual double GetValue(ABuildingSlot* endNode);
-
-
-
-	/*
 	* Can this BuildingSlot be built on?
 	* @return True if the BuildingSlot is empty and can be built on.
 	*/
@@ -108,41 +81,5 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Building")
 	virtual bool Build();
-
-	/*
-	* Checks if the other BuildingSlot is adjacent to this BuildingSlot.
-	* 
-	* Checks if this instance's AdjacentMap contains the other BuildingSlot as a key.
-	* 
-	* Time complexity: O(1)
-	* 
-	* @param otherBuildingSlot The BuildingSlot to check adjacency with.
-	* @return True if the other BuildingSlot is adjacent to this BuildingSlot.
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual bool isAdjacent(ABuildingSlot* otherBuildingSlot);
-
-	/*
-	* Add an adjacent BuildingSlot to this BuildingSlot.
-	* 
-	* Only adds the other BuildingSlot if it is not already adjacent.
-	* 
-	* Time complexity: O(1)
-	* 
-	* @param otherBuildingSlot The BuildingSlot to add as adjacent.
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual void AddAdjacent(ABuildingSlot* otherBuildingSlot);
-
-
-	/*
-	* Get all adjacent building slots, with self as first element.
-	* 
-	* Time complexity: O(1)
-	* 
-	* @return An array of pointers to all adjacent BuildingSlots.
-	*/
-	UFUNCTION(BlueprintCallable, Category = "Graph")
-	virtual TArray<ABuildingSlot*> GetAdjacent();
 
 };

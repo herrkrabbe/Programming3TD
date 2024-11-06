@@ -8,7 +8,6 @@ AGraphNode::AGraphNode()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -27,7 +26,7 @@ void AGraphNode::Tick(float DeltaTime)
 
 double AGraphNode::GetValue(AGraphNode* endNode)
 {
-	return ThreatLevel + FVector::Dist(this->GetActorLocation(), endNode->GetActorLocation());;
+	return GetThreatLevel() + FVector::Dist(this->GetActorLocation(), endNode->GetActorLocation());;
 }
 
 double AGraphNode::GetThreatLevel() const
@@ -49,6 +48,9 @@ void AGraphNode::AddAdjacent(AGraphNode* otherBuildingSlot)
 {
 	if (isAdjacent(otherBuildingSlot))
 	{
+		return;
+	}
+	if (otherBuildingSlot == this) {
 		return;
 	}
 

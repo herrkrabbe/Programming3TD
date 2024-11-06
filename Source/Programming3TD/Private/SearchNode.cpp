@@ -5,17 +5,24 @@
 
 SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent)
 {
+	if (parent.Get() == this)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Parent is the same as the child"));
+		throw;
+	}
 	State = state;
 	Parent = parent;
+	Identity = ID;
 	SetEndNode(endNode);
 	
-	if (parent = nullptr)
+	if (!parent)
 	{
 		Depth = 0;
 		Cost = state->GetThreatLevel();
 	}
 	else
 	{
+		
 		Depth = parent->Depth + 1;
 
 		float ParentCost = Parent->GetCost();
@@ -61,7 +68,6 @@ void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const
 	{
 		return;
 	}
-
 	Parent->MakePath(path);
 }
 
