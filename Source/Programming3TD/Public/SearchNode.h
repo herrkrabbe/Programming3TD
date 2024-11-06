@@ -12,12 +12,11 @@
 class PROGRAMMING3TD_API SearchNode
 {
 private: //variables
-	TObjectPtr<SearchNode> Parent;
-	TObjectPtr<AGraphNode> State;
+	TObjectPtr<SearchNode> Parent = nullptr;
+	TObjectPtr<AGraphNode> State = nullptr;
 	int64 Identity;
 	float Heuristic;
 	float Cost;
-	int64 Depth;
 
 public: //functions
 	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent);

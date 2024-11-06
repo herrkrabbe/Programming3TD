@@ -6,6 +6,7 @@
 
 SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent) // parent is nullptr in .h file
 {
+
 	if (parent == this)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Parent is the same as the child"));
@@ -28,9 +29,9 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 		UE_LOGFMT(LogTemp, Warning, "Parent input: NONE");
 	}
 
-	Parent = parent;
+	Parent = parent; // THIS LINE CRASHES THE GAME
 
-	if (parent) {
+	if (Parent) {
 		UE_LOGFMT(LogTemp, Warning, "Parent after setting: `{0}`", parent->State.GetName());
 	}
 	else {
@@ -41,15 +42,12 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 	SetEndNode(endNode);
 	
 	
-	if (!parent)
+	if (!Parent)
 	{
-		throw;
+		//throw;
 	}
 	else
 	{
-		
-		Depth = parent->Depth + 1;
-
 		float ParentCost = Parent->GetCost();
 		float DistanceCost = FVector::Dist(State->GetActorLocation(), Parent->State->GetActorLocation());
 		float ThreatLevelCost = State->GetThreatLevel();
@@ -57,10 +55,10 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 	}
 
 	if (Parent) {
-		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This Depth `{1}`, This ID `{2}`. Parent: `{3}`, Parent Depth `{4}`, Parent ID `{5}`", state->GetName(), Depth, Identity, Parent->State->GetName(), Parent->Depth, Parent->Identity);
+		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This ID `{1}`. Parent: `{2}`, Parent ID `{3}`", state->GetName(), Identity, Parent->State->GetName(), Parent->Identity);
 	}
 	else {
-		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This Depth `{1}`, This ID `{2}`. Parent: NONE", state->GetName(), Depth, Identity);
+		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This ID `{1}`. Parent: NONE", state->GetName(), Identity);
 	}
 }
 
@@ -74,7 +72,6 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 	Identity = ID;
 	SetEndNode(endNode);
 
-	Depth = 0;
 	Cost = state->GetThreatLevel();
 
 }
@@ -99,7 +96,7 @@ TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath() const
 	TDeque<TObjectPtr<AGraphNode>> path;
 	path.PushLast(State);
 
-	if (Depth != 0)
+	if (Parent)
 	{
 		Parent->MakePath(path);
 	}
@@ -111,7 +108,7 @@ void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const
 {
 	path.PushFirst(State);
 
-	if (Depth == 0)
+	if (!Parent)
 	{
 		return;
 	}

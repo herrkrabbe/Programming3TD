@@ -57,9 +57,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 			}
 		}
 
-
-		AdjacentNodes.Empty();
-
 	}
 
 	return Path;
