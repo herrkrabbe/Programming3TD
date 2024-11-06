@@ -18,7 +18,7 @@ void ATDPlayerController::SetWaveManager(AAbstractWaveManager* newWaveManager)
 
 bool ATDPlayerController::HasWaveManager() const
 {
-	return !(WaveManager.IsNull());
+	return WaveManager != nullptr;
 }
 
 void ATDPlayerController::Reset()

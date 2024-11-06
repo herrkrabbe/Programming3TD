@@ -22,11 +22,12 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 	CostMap.Add(startNode.GetState(), startNode.GetCost());
 
 
-	TObjectPtr<SearchNode> CurrentNode = nullptr;
+
 
 
 	while (!OpenQueue.IsEmpty()) {
-		OpenQueue.HeapPop(CurrentNode); // Gets the top item in the open queue. O(log q) where q is number of items in the queue
+		TObjectPtr<SearchNode> CurrentNode = OpenQueue.HeapTop();
+		OpenQueue.HeapPopDiscard(); // Gets the top item in the open queue. O(log q) where q is number of items in the queue
 
 		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
 			for (auto e : CostMap) {
@@ -56,6 +57,9 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 				OpenQueue.HeapPush(neighbourNode);
 			}
 		}
+
+
+		AdjacentNodes.Empty();
 
 	}
 

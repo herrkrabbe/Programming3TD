@@ -7,44 +7,18 @@
 SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent) // parent is nullptr in .h file
 {
 
-	if (parent == this)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Parent is the same as the child"));
-	}
 	State = state;
 
-	if (Parent) {
+	Parent = parent;
 
-		UE_LOGFMT(LogTemp, Warning, "Parent before setting: `{0}`", Parent->State.GetName());
-	}
-	else {
-
-		UE_LOGFMT(LogTemp, Warning, "Parent before setting: NONE");
-	}
-
-	if (parent) {
-		UE_LOGFMT(LogTemp, Warning, "Parent input: `{0}`", parent->State.GetName());
-	}
-	else {
-		UE_LOGFMT(LogTemp, Warning, "Parent input: NONE");
-	}
-
-	Parent = parent; // THIS LINE CRASHES THE GAME
-
-	if (Parent) {
-		UE_LOGFMT(LogTemp, Warning, "Parent after setting: `{0}`", parent->State.GetName());
-	}
-	else {
-		UE_LOGFMT(LogTemp, Warning, "Parent after setting: NONE");
-	}
 
 	Identity = ID;
 	SetEndNode(endNode);
 	
 	
-	if (!Parent)
+	if (Parent == nullptr)
 	{
-		//throw;
+		throw;
 	}
 	else
 	{
@@ -54,12 +28,6 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 		Cost = ParentCost + DistanceCost + ThreatLevelCost;
 	}
 
-	if (Parent) {
-		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This ID `{1}`. Parent: `{2}`, Parent ID `{3}`", state->GetName(), Identity, Parent->State->GetName(), Parent->Identity);
-	}
-	else {
-		UE_LOGFMT(LogTemp, Warning, "This: `{0}`, This ID `{1}`. Parent: NONE", state->GetName(), Identity);
-	}
 }
 
 SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID)
@@ -91,12 +59,12 @@ float SearchNode::GetExpectedCost() const
 	return GetCost() + Heuristic;
 }
 
-TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath() const
+TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath()
 {
 	TDeque<TObjectPtr<AGraphNode>> path;
 	path.PushLast(State);
 
-	if (Parent)
+	if (Parent != nullptr)
 	{
 		Parent->MakePath(path);
 	}
@@ -104,11 +72,11 @@ TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath() const
 	return path;
 }
 
-void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const
+void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path)
 {
 	path.PushFirst(State);
 
-	if (!Parent)
+	if (Parent == nullptr)
 	{
 		return;
 	}

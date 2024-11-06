@@ -12,7 +12,7 @@
 class PROGRAMMING3TD_API SearchNode
 {
 private: //variables
-	TObjectPtr<SearchNode> Parent = nullptr;
+	TObjectPtr<SearchNode> Parent;
 	TObjectPtr<AGraphNode> State = nullptr;
 	int64 Identity;
 	float Heuristic;
@@ -35,7 +35,7 @@ public: //functions
 
 	TObjectPtr<AGraphNode> GetState() const { return State; }
 
-	TDeque<TObjectPtr<AGraphNode>> GetPath() const;
+	TDeque<TObjectPtr<AGraphNode>> GetPath();
 
 	bool operator<(const SearchNode& other) const
 	{
@@ -55,5 +55,5 @@ public: //functions
 
 private: //functions
 
-	void MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const;
+	void MakePath(TDeque<TObjectPtr<AGraphNode>> &path);
 };

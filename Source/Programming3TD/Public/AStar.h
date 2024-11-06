@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include <SearchNode.h>
 #include "Containers/Deque.h"
-
 /**
  * 
  */
