@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0" version="24.8.3">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1107" dy="610" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="671" dy="603" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -100,6 +100,15 @@
             <mxPoint x="530" y="940" as="sourcePoint" />
             <mxPoint x="580" y="890" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="eKixdsAbkcGCp6bl-4_E-20" value="ATDPlayerController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="610" y="980" width="450" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="eKixdsAbkcGCp6bl-4_E-21" value="- HPCurrent : int64&lt;div&gt;- HPMax : int64&lt;/div&gt;&lt;div&gt;- WaveManager : AAbstractWaveManager*&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="eKixdsAbkcGCp6bl-4_E-20">
+          <mxGeometry y="26" width="450" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="eKixdsAbkcGCp6bl-4_E-22" value="+ ATDPlayerController()&lt;div&gt;+ SetWaveManager(newWaveManager : AbstractWaveManager*) : void&lt;/div&gt;&lt;div&gt;+ HasWaveManager() : bool&lt;/div&gt;&lt;div&gt;+ Reset() : void&lt;/div&gt;&lt;div&gt;+ GetHpCurrent() : int64&lt;/div&gt;&lt;div&gt;+ GetHPMax() : int64&lt;/div&gt;&lt;div&gt;+ SetMaxHp(newMaxHP : int64) : void&lt;/div&gt;&lt;div&gt;+ WaveEnded() : void&lt;/div&gt;&lt;div&gt;+ GameEnded() : void&lt;/div&gt;&lt;div&gt;+ StartWave() : void&lt;/div&gt;&lt;div&gt;+ AddDeadEnemyToWaveManager(deadEnemy : AAbstractEnemy*) : void&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=default;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;perimeterSpacing=0;strokeWidth=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="610" y="1070" width="450" height="120" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
