@@ -7,8 +7,7 @@ SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endN
 {
 	if (parent.Get() == this)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("Parent is the same as the child"));
-		throw;
+		UE_LOG(LogTemp, Warning, TEXT("Parent is the same as the child"));
 	}
 	State = state;
 	Parent = parent;
