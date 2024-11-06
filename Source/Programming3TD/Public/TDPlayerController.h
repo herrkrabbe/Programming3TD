@@ -41,6 +41,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Setters")
 	void SetMaxHP(int64 newMaxHP);
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void LoseHealth(int64 DamageTaken);
+
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	void LoseGame();
 	
 	/*
 	* Function called to tell the controller the wave has ended

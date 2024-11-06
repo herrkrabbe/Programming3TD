@@ -3,16 +3,21 @@
 
 #include "AbstractEnemy.h"
 
+#include <TDPlayerController.h>
+
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 AAbstractEnemy::AAbstractEnemy()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	queueIndex = 0;
-	isAlive = 0;
+	isAlive = false;
 	speed = 100;
 	healthMax = 1;
 	healthCurrent = healthMax;
+	DamageDealt = 5;
 
 }
 
@@ -50,9 +55,21 @@ bool AAbstractEnemy::AttackThis(int64 damage)
 	this->healthCurrent -= damage;
 	if (this->healthCurrent <= 0)
 	{
-		isAlive = 0;
+		RemoveThis();
 	}
 	return !isAlive;
+}
+
+void AAbstractEnemy::RemoveThis()
+{
+	if (TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
+		PlayerController->AddDeadEnemyToWaveManager(this);
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Wrong PlayerController is being used"));
+	}
+	isAlive = false;
+	pathQueue.Empty();
 }
 
 void AAbstractEnemy::Spawn()
@@ -62,7 +79,7 @@ void AAbstractEnemy::Spawn()
 		return;
 	}
 	this->healthCurrent = this->healthMax;
-	this->isAlive = 1;
+	this->isAlive = true;
 	this->queueIndex = 0;
 	this->SetActorLocation(this->pathQueue[0]->GetActorLocation());
 }
@@ -96,18 +113,30 @@ void AAbstractEnemy::TeleportGlobal(FVector newLocation)
 
 void AAbstractEnemy::MoveToNextNode(float DeltaTime)
 {
-	if (this->queueIndex >= this->pathQueue.Num())
-	{
-		return;
+	//if (this->queueIndex >= this->pathQueue.Num())
+	//{
+	//	return;
+	//}
+
+	//Checks if the queue is empty before using it, in order to avoid errors
+	if (pathQueue.IsEmpty()) {
+
+		TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		PlayerController->LoseHealth(DamageDealt);
+		this->RemoveThis();
 	}
 
-	TObjectPtr<AGraphNode> nextNode = this->pathQueue[this->queueIndex];
+	TObjectPtr<AGraphNode> nextNode = this->pathQueue.First();
 	FVector direction = nextNode->GetActorLocation() - this->GetActorLocation();
 	direction.Normalize();
 	this->SetActorLocation(this->GetActorLocation() + direction * speed * DeltaTime);
 
 	if (FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation()) < 1)
 	{
-		this->queueIndex++;
+		this->pathQueue.PopFirst();
 	}
+
+	//There is also a check if queue is empty here, one of these is redundant, however I have yet to find out which one
+	if (pathQueue.IsEmpty())
+		this->RemoveThis();
 }

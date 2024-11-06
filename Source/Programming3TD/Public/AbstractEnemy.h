@@ -50,6 +50,9 @@ protected:
 	int64 healthMax;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int64 DamageDealt;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int64 queueIndex;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -64,6 +67,9 @@ public:
 	* @return true if the enemy is killed, false otherwise.
 	*/
 	virtual bool AttackThis(int64 damage);
+
+	//Removes the enemy from the world and gives it back to the WaveManager through the PlayerController
+	virtual void RemoveThis();
 
 	/*
 	* Function to spawn this enemy.
