@@ -2,6 +2,7 @@
 
 
 #include "AStar.h"
+#include <Logging/StructuredLog.h>
 
 TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TObjectPtr<AGraphNode> end)
 {
@@ -20,9 +21,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
 	CostMap.Add(startNode.GetState(), startNode.GetCost());
 
-	// Stores the total weight of a state
-	TMap<TObjectPtr<AGraphNode>, float> WeightMap;
-	WeightMap.Add(startNode.GetState(), startNode.GetExpectedCost());
 
 	TObjectPtr<SearchNode> CurrentNode = nullptr;
 
@@ -31,6 +29,9 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 		OpenQueue.HeapPop(CurrentNode); // Gets the top item in the open queue. O(log q) where q is number of items in the queue
 
 		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
+			for (auto e : CostMap) {
+				UE_LOGFMT(LogTemp, Warning, "Key: `{0}`, Cost: `{1}`", *e.Key->GetName(), e.Value);
+			}
 			Path = CurrentNode->GetPath();
 			break;
 		}
@@ -40,14 +41,18 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 
 		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
-			if (neighbour == CurrentNode->GetState()) continue; //skip if the neighbour is self
-
+			if (neighbour == CurrentNode->GetState()) {
+				UE_LOGFMT(LogTemp, Warning, "Neighbour is self. Skip");
+				continue; //skip if the neighbour is self
+			}
+			else {
+				UE_LOGFMT(LogTemp, Warning, "Current: {0}, Neighbour: {1}", CurrentNode->GetState()->GetName(), neighbour->GetName());
+			}
 			SearchNode neighbourNode(neighbour, end, identity, CurrentNode);
 			identity++;
 
 			if (!CostMap.Contains(neighbour) || neighbourNode.GetCost() < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
 				CostMap.Add(neighbour, neighbourNode.GetCost());
-				WeightMap.Add(neighbour, neighbourNode.GetExpectedCost());
 				OpenQueue.HeapPush(neighbourNode);
 			}
 		}

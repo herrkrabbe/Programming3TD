@@ -20,7 +20,8 @@ private: //variables
 	int64 Depth;
 
 public: //functions
-	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent = nullptr);
+	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent);
+	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID);
 
 	void SetEndNode(TObjectPtr<AGraphNode> endNode);
 
@@ -40,6 +41,16 @@ public: //functions
 	bool operator<(const SearchNode& other) const
 	{
 		return GetExpectedCost() < other.GetExpectedCost();
+	}
+
+	bool operator>(const SearchNode& other) const
+	{
+		return GetExpectedCost() > other.GetExpectedCost();
+	}
+
+	bool operator==(const SearchNode& other) const
+	{
+		return GetExpectedCost() == other.GetExpectedCost();
 	}
 
 
