@@ -13,7 +13,7 @@ AAbstractEnemy::AAbstractEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	queueIndex = 0;
-	isAlive = 0;
+	isAlive = false;
 	speed = 100;
 	healthMax = 1;
 	healthCurrent = healthMax;
@@ -79,7 +79,7 @@ void AAbstractEnemy::Spawn()
 		return;
 	}
 	this->healthCurrent = this->healthMax;
-	this->isAlive = 1;
+	this->isAlive = true;
 	this->queueIndex = 0;
 	this->SetActorLocation(this->pathQueue[0]->GetActorLocation());
 }
@@ -121,7 +121,7 @@ void AAbstractEnemy::MoveToNextNode(float DeltaTime)
 	//Checks if the queue is empty before using it, in order to avoid errors
 	if (pathQueue.IsEmpty()) {
 
-		ATDPlayerController* PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		PlayerController->LoseHealth(DamageDealt);
 		this->RemoveThis();
 	}
