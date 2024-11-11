@@ -50,6 +50,9 @@ void ATDPlayerController::SetMaxHP(int64 newMaxHP)
 
 void ATDPlayerController::LoseHealth(int64 DamageTaken)
 {
+	if (DamageTaken <= 0)
+		return;
+
 	HPCurrent -= DamageTaken;
 	if (GetHPMax() <= 0)
 		LoseGame();
