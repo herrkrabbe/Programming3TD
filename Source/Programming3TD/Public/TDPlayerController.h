@@ -45,7 +45,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	void LoseHealth(int64 DamageTaken);
 
-	UFUNCTION(BlueprintCallable, Category = "Damage")
+	UFUNCTION(BlueprintCallable, /*BlueprintNativeEvent,*/ Category = "Damage")
 	void LoseGame();
 	
 	/*
