@@ -4,6 +4,7 @@
 #include "AbstractWaveManager.h"
 #include <Kismet/GameplayStatics.h>
 #include <TDPlayerController.h>
+#include <AStar.h>
 
 // Sets default values
 AAbstractWaveManager::AAbstractWaveManager()
@@ -49,6 +50,8 @@ void AAbstractWaveManager::StartWave()
 	EnemiesInWave = EnemiesInWaveStack.Num();
 
 	bIsWaveActive = true;
+
+	CreatePath();
 }
 
 void AAbstractWaveManager::EndWave()
@@ -92,6 +95,41 @@ void AAbstractWaveManager::AddNewEnemy(AAbstractEnemy* newEnemy)
 {
 	if (!bIsWaveActive) return;
 	EnemiesInWaveStack.Push(newEnemy);
+}
+
+void AAbstractWaveManager::SpawnNextEnemy()
+{
+	if (EnemiesInWaveStack.IsEmpty()) return;
+
+	TObjectPtr<AAbstractEnemy> enemy = EnemiesInWaveStack.Pop();
+	enemy->SetPathQueue(Path);
+	enemy->Spawn();
+}
+
+void AAbstractWaveManager::SpawnEnemyPrototypeFunction(AAbstractEnemy* enemy)
+{
+	EnemiesInWaveStack.Push(enemy);
+	EnemiesInWave++;
+	SpawnNextEnemy();
+
+}
+
+bool AAbstractWaveManager::CreatePath()
+{
+	if (StartNode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("StartNode is nullptr"));
+		return false;
+	}
+	if (EndNode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("EndNode is nullptr"));
+		return false;
+	}
+
+	Path = AStar::FindPathMapImplementation(StartNode, EndNode);
+
+	return !Path.IsEmpty();
 }
 
 int64 AAbstractWaveManager::AddNewEnemiesToWave()

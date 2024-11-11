@@ -2,27 +2,46 @@
 
 
 #include "SearchNode.h"
+#include <Logging/StructuredLog.h>
 
-SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent)
+SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent) // parent is nullptr in .h file
 {
+
 	State = state;
+
 	Parent = parent;
+
+
+	Identity = ID;
 	SetEndNode(endNode);
 	
-	if (parent = nullptr)
+	
+	if (Parent == nullptr)
 	{
-		Depth = 0;
-		Cost = state->GetThreatLevel();
+		throw;
 	}
 	else
 	{
-		Depth = parent->Depth + 1;
-
 		float ParentCost = Parent->GetCost();
 		float DistanceCost = FVector::Dist(State->GetActorLocation(), Parent->State->GetActorLocation());
 		float ThreatLevelCost = State->GetThreatLevel();
 		Cost = ParentCost + DistanceCost + ThreatLevelCost;
 	}
+
+}
+
+SearchNode::SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID)
+{
+
+	State = state;
+
+	Parent = nullptr;
+
+	Identity = ID;
+	SetEndNode(endNode);
+
+	Cost = state->GetThreatLevel();
+
 }
 
 void SearchNode::SetEndNode(TObjectPtr<AGraphNode> endNode)
@@ -40,12 +59,12 @@ float SearchNode::GetExpectedCost() const
 	return GetCost() + Heuristic;
 }
 
-TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath() const
+TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath()
 {
 	TDeque<TObjectPtr<AGraphNode>> path;
 	path.PushLast(State);
 
-	if (Depth != 0)
+	if (Parent != nullptr)
 	{
 		Parent->MakePath(path);
 	}
@@ -53,15 +72,14 @@ TDeque<TObjectPtr<AGraphNode>> SearchNode::GetPath() const
 	return path;
 }
 
-void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const
+void SearchNode::MakePath(TDeque<TObjectPtr<AGraphNode>> &path)
 {
 	path.PushFirst(State);
 
-	if (Depth == 0)
+	if (Parent == nullptr)
 	{
 		return;
 	}
-
 	Parent->MakePath(path);
 }
 

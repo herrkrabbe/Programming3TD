@@ -13,13 +13,14 @@ class PROGRAMMING3TD_API SearchNode
 {
 private: //variables
 	TObjectPtr<SearchNode> Parent;
-	TObjectPtr<AGraphNode> State;
+	TObjectPtr<AGraphNode> State = nullptr;
+	int64 Identity;
 	float Heuristic;
 	float Cost;
-	int64 Depth;
 
 public: //functions
-	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent = nullptr);
+	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID, TObjectPtr<SearchNode> parent);
+	SearchNode(TObjectPtr<AGraphNode> state, TObjectPtr<AGraphNode> endNode, int64 ID);
 
 	void SetEndNode(TObjectPtr<AGraphNode> endNode);
 
@@ -34,15 +35,25 @@ public: //functions
 
 	TObjectPtr<AGraphNode> GetState() const { return State; }
 
-	TDeque<TObjectPtr<AGraphNode>> GetPath() const;
+	TDeque<TObjectPtr<AGraphNode>> GetPath();
 
 	bool operator<(const SearchNode& other) const
 	{
 		return GetExpectedCost() < other.GetExpectedCost();
 	}
 
+	bool operator>(const SearchNode& other) const
+	{
+		return GetExpectedCost() > other.GetExpectedCost();
+	}
+
+	bool operator==(const SearchNode& other) const
+	{
+		return GetExpectedCost() == other.GetExpectedCost();
+	}
+
 
 private: //functions
 
-	void MakePath(TDeque<TObjectPtr<AGraphNode>> &path) const;
+	void MakePath(TDeque<TObjectPtr<AGraphNode>> &path);
 };
