@@ -127,7 +127,7 @@ bool AAbstractWaveManager::CreatePath()
 		return false;
 	}
 
-	Path = AStar::FindPath(StartNode, EndNode);
+	Path = AStar::FindPathMapImplementation(StartNode, EndNode);
 
 	return !Path.IsEmpty();
 }
