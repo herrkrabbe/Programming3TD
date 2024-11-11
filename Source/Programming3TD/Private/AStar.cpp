@@ -65,3 +65,54 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 	return Path;
 }
+
+TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGraphNode> start, TObjectPtr<AGraphNode> end)
+{
+	TDeque<TObjectPtr<AGraphNode>> Path;
+
+	// PriorityQueue using BinaryHeap implementation
+	// Stores the nodes that are open to be evaluated
+	TArray<TObjectPtr<AGraphNode>> OpenQueue;
+
+	OpenQueue.HeapPush(start);
+
+	// Stores the states that have already been evaluated
+	TMap<TObjectPtr<AGraphNode>, float> CostMap;
+	CostMap.Add(start, start->GetThreatLevel());
+
+	// Stores the parent of each node
+	TMap<TObjectPtr<AGraphNode>, TObjectPtr<AGraphNode>> ParentMap;
+	ParentMap.Add(start, nullptr);
+
+	while (!OpenQueue.IsEmpty()) {
+		TObjectPtr<AGraphNode> CurrentNode = OpenQueue.HeapTop();
+		OpenQueue.HeapPopDiscard(); // Gets the top item in the open queue. O(log v) where v is number of items in the queue
+
+		if (CurrentNode == end) { // target is found. Get path to end, and break the loop to return the path
+			TObjectPtr<AGraphNode> Current = CurrentNode;
+			while (Current != nullptr) {
+				Path.PushFirst(Current);
+				Current = ParentMap[Current];
+			}
+			break;
+		}
+		
+		TArray<TObjectPtr<AGraphNode>> AdjacentNodes;
+		AdjacentNodes = CurrentNode->GetAdjacent();
+
+		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
+			if (neighbour == CurrentNode) {
+				continue; //skip if the neighbour is self
+			}
+
+			float newCost = CostMap[CurrentNode] + neighbour->GetThreatLevel();
+			if (!CostMap.Contains(neighbour) || newCost < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
+				CostMap.Add(neighbour, newCost);
+				OpenQueue.HeapPush(neighbour);
+				ParentMap.Add(neighbour, CurrentNode);
+			}
+		}
+	}
+
+	return Path;
+}
