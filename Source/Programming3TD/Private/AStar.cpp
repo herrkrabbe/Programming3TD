@@ -72,44 +72,49 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 
 	// PriorityQueue using BinaryHeap implementation
 	// Stores the nodes that are open to be evaluated
-	TArray<TObjectPtr<AGraphNode>> OpenQueue;
+	TArray<TObjectPtr<UValueNode>> OpenQueue;
+	FVector endCoordinates = end->GetActorLocation();
+	UValueNode startValueNode(start, endCoordinates);
 
-	OpenQueue.HeapPush(start);
+	OpenQueue.HeapPush(startValueNode);
 
 	// Stores the states that have already been evaluated
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
 	CostMap.Add(start, start->GetThreatLevel());
 
 	// Stores the parent of each node
-	TMap<TObjectPtr<AGraphNode>, TObjectPtr<AGraphNode>> ParentMap;
-	ParentMap.Add(start, nullptr);
+	TMap<TObjectPtr<UValueNode>, TObjectPtr<UValueNode>> ParentMap;
+	ParentMap.Add(startValueNode, nullptr);
 
 	while (!OpenQueue.IsEmpty()) {
-		TObjectPtr<AGraphNode> CurrentNode = OpenQueue.HeapTop();
+		TObjectPtr<UValueNode> CurrentNode = OpenQueue.HeapTop();
 		OpenQueue.HeapPopDiscard(); // Gets the top item in the open queue. O(log v) where v is number of items in the queue
 
-		if (CurrentNode == end) { // target is found. Get path to end, and break the loop to return the path
-			TObjectPtr<AGraphNode> Current = CurrentNode;
+		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
+			TObjectPtr<UValueNode> Current = CurrentNode;
 			while (Current != nullptr) {
-				Path.PushFirst(Current);
+				Path.PushFirst(Current->GetState());
 				Current = ParentMap[Current];
 			}
+			OpenQueue.Empty();
 			break;
 		}
 		
 		TArray<TObjectPtr<AGraphNode>> AdjacentNodes;
-		AdjacentNodes = CurrentNode->GetAdjacent();
+		AdjacentNodes = CurrentNode->GetState()->GetAdjacent();
 
 		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
-			if (neighbour == CurrentNode) {
+			if (neighbour == CurrentNode->GetState()) {
 				continue; //skip if the neighbour is self
 			}
 
-			float newCost = CostMap[CurrentNode] + neighbour->GetThreatLevel();
+			float newCost = CostMap[CurrentNode->GetState()] + neighbour->GetThreatLevel();
 			if (!CostMap.Contains(neighbour) || newCost < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
+				UValueNode neighbourValueNode(neighbour,endCoordinates);
+				
 				CostMap.Add(neighbour, newCost);
-				OpenQueue.HeapPush(neighbour);
-				ParentMap.Add(neighbour, CurrentNode);
+				OpenQueue.HeapPush(neighbourValueNode);
+				ParentMap.Add(neighbourValueNode, CurrentNode);
 			}
 		}
 	}
