@@ -2,7 +2,6 @@
 
 
 #include "BuildingSlot.h"
-#include "AbstractTower.h"
 
 // Sets default values
 ABuildingSlot::ABuildingSlot() : AGraphNode()
@@ -37,9 +36,17 @@ bool ABuildingSlot::Build()
 	if (CanBuild())
 		return false;
 
-	ChildTower = GetWorld()->SpawnActor<AAbstractTower>(TowerClass, GetActorLocation(), GetActorRotation());
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	ChildTower = GetWorld()->SpawnActor<AAbstractTower>(TowerClass, GetActorLocation(), GetActorRotation(), SpawnParams);
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tower built"));
 	hasBuilding = true;
-	ThreatLevel += ChildTower->ThreatLevel;
+	if (ChildTower)
+	{
+		ThreatLevel = ThreatLevel + ChildTower->ThreatLevel;
+	}
+	else return false;
 
 	return true;
 
