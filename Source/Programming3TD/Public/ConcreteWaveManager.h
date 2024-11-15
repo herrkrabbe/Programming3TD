@@ -13,6 +13,7 @@ UCLASS()
 class PROGRAMMING3TD_API AConcreteWaveManager : public AAbstractWaveManager
 {
 	GENERATED_BODY()
+	AConcreteWaveManager();
 
 private:
 

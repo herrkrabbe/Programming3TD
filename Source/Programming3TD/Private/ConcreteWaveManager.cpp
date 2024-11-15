@@ -24,7 +24,7 @@ void AConcreteWaveManager::BeginPlay()
 void AConcreteWaveManager::EndPlay()
 {
     Super::EndPlay();
-    //remove all enemies. remove queues-- 
+    // remove all enemies. remove queues-- 
     // empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 
     UE_LOG(LogTemp, Warning, TEXT("EndPlay called in AConcreteWaveManager!"));
