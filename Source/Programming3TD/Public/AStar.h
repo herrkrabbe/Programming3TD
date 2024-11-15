@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <ValueNode.h>
 #include <SearchNode.h>
 #include "Containers/Deque.h"
+
 /**
  * 
  */
