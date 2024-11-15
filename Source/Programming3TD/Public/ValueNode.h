@@ -8,7 +8,16 @@
 #include "ValueNode.generated.h"
 
 /*
+* ValueNode is an intermediate class between A* and a GraphNode.
+* 
+* ValueNode is used to store the heuristic of a node used in A*, which a GraphNode does not have.
+* The ValueNode is also sortable using the < operator.
+* 
+* Remember to call the Initialize function after creating this object.
+* 
+* 
  * @author Paulius
+ * @author Alexander
  */
 UCLASS()
 class PROGRAMMING3TD_API UValueNode : public UObject
@@ -22,6 +31,14 @@ public:
 	* endCoordinates are the *new* heuristic values based on FVector:Dist("euclidean") 2 values, newStates location, and endCoordinates.
 	*/
 	UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates);
+
+	/*
+	* Initialises the field variables of the ValueNode.
+	* 
+	* @param newState is the GraphNode the ValueNode represents.
+	* @param endCoordinates are the coordinates of the end node of the path.
+	*/
+	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates);
 	
 	TObjectPtr<AGraphNode>GetState() const { return State; };
 

@@ -72,11 +72,14 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 
 	// PriorityQueue using BinaryHeap implementation
 	// Stores the nodes that are open to be evaluated
-	TArray<TObjectPtr<UValueNode>> OpenQueue;
-	FVector endCoordinates = end->GetActorLocation();
-	UValueNode startValueNode(start, endCoordinates);
+	TArray <TObjectPtr< UValueNode >> OpenQueue;
 
-	OpenQueue.HeapPush(startValueNode);
+	//Create initial node
+	FVector endCoordinates = end->GetActorLocation();
+	TObjectPtr<UValueNode> startValueNode = NewObject<UValueNode>();
+	startValueNode->Initialize(start, endCoordinates);
+
+	OpenQueue.HeapPush(*startValueNode);
 
 	// Stores the states that have already been evaluated
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
@@ -110,11 +113,13 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 
 			float newCost = CostMap[CurrentNode->GetState()] + neighbour->GetThreatLevel();
 			if (!CostMap.Contains(neighbour) || newCost < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
-				UValueNode neighbourValueNode(neighbour,endCoordinates);
+				TObjectPtr<UValueNode> neighbourValueNode = NewObject<UValueNode>();
+				neighbourValueNode->Initialize(neighbour, endCoordinates);
 				
 				CostMap.Add(neighbour, newCost);
-				OpenQueue.HeapPush(neighbourValueNode);
+				OpenQueue.HeapPush(*neighbourValueNode);
 				ParentMap.Add(neighbourValueNode, CurrentNode);
+				GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red, FString::Printf(TEXT("Node: %s, Value: %f, Heuristic: %f, Cost: %f"), *neighbour->GetName(), neighbourValueNode->GetValue(), (neighbourValueNode->GetValue()-CostMap[neighbour]), CostMap[neighbour]));
 			}
 		}
 	}

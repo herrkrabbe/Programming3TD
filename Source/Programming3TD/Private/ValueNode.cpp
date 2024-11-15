@@ -15,3 +15,9 @@ UValueNode::UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates)
 	State = newState;
 	heuristic = endCoordinates.Dist(newState->GetActorLocation(),endCoordinates);
 }
+
+void UValueNode::Initialize(TObjectPtr<AGraphNode> newState, FVector endCoordinates)
+{
+	State = newState;
+	heuristic = endCoordinates.Dist(newState->GetActorLocation(), endCoordinates);
+}
