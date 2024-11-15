@@ -19,20 +19,9 @@ private:
 public:
 
 protected:
-	void BeginPlay();
+	virtual void BeginPlay() override;
+	
 	void EndPlay();
 };
 
-AConcreteWaveManager::BeginPlay() {
-	Super::BeginPlay();
-	//spawn enmies, add enms to q
 
-
-}
-
-AConcreteWaveManager::EndPlay() {
-	//remove all enemies. remove queues-- 
-	// empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
-	Super::EndPlay();
-
-}

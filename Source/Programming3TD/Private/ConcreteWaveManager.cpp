@@ -6,24 +6,26 @@
 
 AConcreteWaveManager::AConcreteWaveManager()
 {
-    // Set default values for this component
-    PrimaryComponentTick.bCanEverTick = true;
+   
 }
 
-
-
-void AConcreteWaveManager::BeginPlay()
+void AConcreteWaveManager::BeginPlay() 
 {
-    Super::BeginPlay(); // Always call the base class's BeginPlay first
+    Super::BeginPlay(); //spawns the function from AAbstractWaveManager
 
-    // Your custom initialization logic here
+    //to do: spawn enmies, add enms to q, move enemies to start locations 
+    // ~~ spawned under the floor) (maybe better to just have them at start location, only invisible,)
+    // --enemies in q to the start of the level
+
     UE_LOG(LogTemp, Warning, TEXT("BeginPlay called in AConcreteWaveManager!"));
 }
 
+
 void AConcreteWaveManager::EndPlay()
 {
-    Super::EndPlay(); // Always call the base class's BeginPlay first
+    Super::EndPlay();
+    //remove all enemies. remove queues-- 
+    // empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 
-    // Your custom initialization logic here
     UE_LOG(LogTemp, Warning, TEXT("EndPlay called in AConcreteWaveManager!"));
 }

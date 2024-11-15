@@ -17,8 +17,8 @@ AAbstractWaveManager::AAbstractWaveManager()
 // Called when the game starts or when spawned
 void AAbstractWaveManager::BeginPlay()
 {
-	Super::BeginPlay();
 	
+	Super::BeginPlay();
 }
 
 // Called every frame
@@ -30,8 +30,8 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 
 void AAbstractWaveManager::EndPlay()
 {
-	//finish the function to remove enemy q, and 
-
+	//remove all enemies. remove queues-- 
+	// empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 }
 
 void AAbstractWaveManager::StartWave()
