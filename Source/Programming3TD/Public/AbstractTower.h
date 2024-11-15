@@ -31,6 +31,9 @@ public:
 	USphereComponent* AttackRange;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
+	UStaticMeshComponent* TowerMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 	int32 ThreatLevel;
 
 	TDeque<TObjectPtr<AAbstractEnemy>> EnemiesList;
@@ -47,7 +50,7 @@ protected:
 		UPrimitiveComponent* OtherComp, 
 		int32 OtherBodyIndex, 
 		bool bFromSweep, 
-		const FHitResult& SweepResult);
+		const FHitResult & SweepResult);
 
 	UFUNCTION()
 	void OnEndOverlap(UPrimitiveComponent* OverlappedComp, 

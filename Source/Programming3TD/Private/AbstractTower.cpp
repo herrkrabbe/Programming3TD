@@ -11,19 +11,25 @@ AAbstractTower::AAbstractTower()
 
 	AttackRange = CreateDefaultSubobject<USphereComponent>(TEXT("AttackRange"));
 	AttackRange->SetupAttachment(GetRootComponent());
+	AttackRange->SetGenerateOverlapEvents(true);
+
+	TowerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TowerMesh"));
+	TowerMesh->SetupAttachment(AttackRange);
 
 	AttackDamage = 1;
 	AttackSpeed = 1;
 	ThreatLevel = 3;
+
+	
 }
 
 // Called when the game starts or when spawned
 void AAbstractTower::BeginPlay()
 {
 	Super::BeginPlay();
+	//Defining overlap functions so that they work with only c++
 	AttackRange->OnComponentBeginOverlap.AddDynamic(this, &AAbstractTower::OnBeginOverlap);
 	AttackRange->OnComponentEndOverlap.AddDynamic(this, &AAbstractTower::OnEndOverlap);
-	
 }
 
 void AAbstractTower::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -33,21 +39,34 @@ void AAbstractTower::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	AttackRange->OnComponentEndOverlap.RemoveDynamic(this, &AAbstractTower::OnEndOverlap);
 }
 
-void AAbstractTower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAbstractTower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlapped"));
-	if (bFromSweep == true)
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Overlapped"));
+
+	//This gave false negatives, so it is currently disabled
+	/*if (bFromSweep == false)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Does not exist"));
 		return;
-	else if (OtherActor == Cast<AAbstractEnemy>(OtherActor))
+	}
+	else */if (OtherActor == Cast<AAbstractEnemy>(OtherActor))
 	{
 		EnemiesList.PushLast(Cast<AAbstractEnemy>(OtherActor));
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Target Acquired"));
+		return;
 	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Wrong class"));
 }
 
 void AAbstractTower::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	EnemiesList.PopFirst();
+	if(OtherActor == Cast<AAbstractEnemy>(OtherActor))
+	{
+		EnemiesList.PopFirst();
+	}
 }
 
 bool AAbstractTower::TowerAttack(float DeltaTime)
@@ -56,6 +75,7 @@ bool AAbstractTower::TowerAttack(float DeltaTime)
 
 	if (AttackTimer <= 0)
 	{
+	
 		if (EnemiesList.IsEmpty())
 		{
 			AttackTimer = 0;
@@ -76,6 +96,8 @@ bool AAbstractTower::TowerAttack(float DeltaTime)
 void AAbstractTower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	TowerAttack(DeltaTime);
 
 }
 

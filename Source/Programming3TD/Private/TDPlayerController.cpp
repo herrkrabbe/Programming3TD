@@ -77,6 +77,7 @@ void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)
 {
 	if (!HasWaveManager())
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("womp womp"));
 		return;
 	}
 

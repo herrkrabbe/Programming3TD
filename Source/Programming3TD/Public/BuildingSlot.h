@@ -1,13 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-
+#include "AbstractTower.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GraphNode.h"
 #include "BuildingSlot.generated.h"
 
-class AAbstractTower;
 /*
 * The BuildingSlot class represents a location the player can build towers on.
 * The BuildingSlot is also a node or state on a graph, and can be told which
@@ -53,11 +52,17 @@ private:
 	/*
 	 *Creating class based off AAbstractTower in order to spawn it
 	 */
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 	TSubclassOf<AAbstractTower> TowerClass;
+
+private:
 	/*
 	 *Reference to tower on BuildPlot in order to get the ThreatLevel used for the heuristic
 	 */
 	TObjectPtr<AAbstractTower> ChildTower = nullptr;
+
+	
 
 protected:
 	// Called when the game starts or when spawned

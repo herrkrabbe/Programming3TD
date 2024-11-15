@@ -18,6 +18,7 @@ AAbstractEnemy::AAbstractEnemy()
 	healthMax = 1;
 	healthCurrent = healthMax;
 	DamageDealt = 5;
+	JailLocation.Set(0, 0, -100);
 
 }
 
