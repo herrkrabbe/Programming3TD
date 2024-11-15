@@ -138,5 +138,9 @@ void AAbstractEnemy::MoveToNextNode(float DeltaTime)
 
 	//There is also a check if queue is empty here, one of these is redundant, however I have yet to find out which one
 	if (pathQueue.IsEmpty())
+	{
+		TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		PlayerController->LoseHealth(DamageDealt);
 		this->RemoveThis();
+	}
 }
