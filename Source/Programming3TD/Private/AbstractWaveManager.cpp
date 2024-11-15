@@ -28,8 +28,19 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 
 }
 
-void AAbstractWaveManager::EndPlay()
+void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	Super::EndPlay(EndPlayReason);
+
+	NewEnemiesQueue.Empty();
+	EnemiesInWaveStack.Empty();
+	DeadEnemyStack.Empty();
+
+	// pointer reset
+	StartNode = nullptr;
+	EndNode = nullptr;
+
+	UE_LOG(LogTemp, Warning, TEXT("Wave Manager EndPlay: Cleaned up wave resources"));
 	//remove all enemies. remove queues-- 
 	// empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 }

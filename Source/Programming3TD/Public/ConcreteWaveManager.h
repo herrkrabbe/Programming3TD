@@ -15,14 +15,15 @@ class PROGRAMMING3TD_API AConcreteWaveManager : public AAbstractWaveManager
 	GENERATED_BODY()
 	AConcreteWaveManager();
 
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 private:
 
 public:
 
-protected:
-	virtual void BeginPlay() override;
-	
-	void EndPlay();
 };
 
 
