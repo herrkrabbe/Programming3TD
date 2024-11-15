@@ -28,6 +28,12 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 
 }
 
+void AAbstractWaveManager::EndPlay()
+{
+	//finish the function to remove enemy q, and 
+
+}
+
 void AAbstractWaveManager::StartWave()
 {
 	if (StartNode == nullptr || EndNode == nullptr)
@@ -149,4 +155,3 @@ int64 AAbstractWaveManager::AddNewEnemiesToWave()
 	}
 	return enemiesAdded;
 }
-

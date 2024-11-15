@@ -69,6 +69,7 @@ protected:
 	int64 NewEnemiesPerWave;
 
 	TDeque<TObjectPtr<AAbstractEnemy>> NewEnemiesQueue;
+	void EndPlay(); //unfinished
 
 public:
 
