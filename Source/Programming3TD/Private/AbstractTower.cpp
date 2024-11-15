@@ -75,16 +75,14 @@ bool AAbstractTower::TowerAttack(float DeltaTime)
 
 	if (AttackTimer <= 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Ready"));
+	
 		if (EnemiesList.IsEmpty())
 		{
 			AttackTimer = 0;
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Rip"));
 			return false;
 		}
 
 		EnemiesList.First()->AttackThis(AttackDamage);
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("BANG!!!"));
 
 		AttackTimer += AttackSpeed;
 		return true;
