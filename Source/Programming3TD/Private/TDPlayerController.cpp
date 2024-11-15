@@ -54,8 +54,11 @@ void ATDPlayerController::LoseHealth(int64 DamageTaken)
 		return;
 
 	HPCurrent -= DamageTaken;
-	if (GetHPMax() <= 0)
+	if (GetHPCurrent() <= 0)
+	{
 		LoseGame();
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("still hanging on"));
 }
 
 void ATDPlayerController::LoseGame()
