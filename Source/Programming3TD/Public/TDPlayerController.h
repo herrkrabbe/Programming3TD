@@ -19,7 +19,8 @@ class PROGRAMMING3TD_API ATDPlayerController : public APlayerController
 private:
 	int64 HPCurrent;
 	int64 HPMax;
-	TObjectPtr<AAbstractWaveManager> WaveManager;	
+	TObjectPtr<AAbstractWaveManager> WaveManager;
+	bool bWaveIsActive = false;
 
 public:
 	ATDPlayerController();
@@ -47,6 +48,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, /*BlueprintNativeEvent,*/ Category = "Damage")
 	void LoseGame();
+
+	UFUNCTION(BlueprintCallable, Category = "Game")
+	bool GetIsWaveActive() const;
 	
 	/*
 	* Function called to tell the controller the wave has ended

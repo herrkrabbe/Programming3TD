@@ -4,6 +4,7 @@
 
 
 #include "TDPlayerController.h"
+#include "TDPlayerCharacter.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -66,6 +67,11 @@ void ATDPlayerController::LoseGame()
 	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
 }
 
+bool ATDPlayerController::GetIsWaveActive() const
+{
+	return bWaveIsActive;
+}
+
 void ATDPlayerController::StartWave()
 {
 	if (!HasWaveManager())
@@ -74,6 +80,8 @@ void ATDPlayerController::StartWave()
 	}
 
 	WaveManager->StartWave();
+	bWaveIsActive = true;
+	Cast<ATDPlayerCharacter>(GetCharacter())->AddBuildableTowers();
 }
 
 void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)

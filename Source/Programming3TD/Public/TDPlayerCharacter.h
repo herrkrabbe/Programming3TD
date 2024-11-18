@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "TDPlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "TDPlayerCharacter.generated.h"
@@ -16,6 +17,11 @@ class PROGRAMMING3TD_API ATDPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+private:
+	//How many tower can currently be built
+	int32 BuildableTowers = 3;
+	//How many more towers can be built after a wave has ended
+	int32 BuildableTowersPerWave = 3;
 public:
 	// Sets default values for this character's properties
 	ATDPlayerCharacter();
@@ -34,7 +40,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* CharacterMesh;
 
+	/*
+	 * Reference to PlayerController, as it is used often
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<ATDPlayerController> SavedPlayerController;
 
+	UFUNCTION(BlueprintCallable)
+	void AddBuildableTowers();
 	/*
 	 * Input Mapping Context and Actions
 	 */
@@ -45,14 +58,9 @@ public:
 	UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* TargetAction;
 
 	void Move(const FInputActionValue& Value);
-
-	void LookAround(const FInputActionValue& Value);
 
 	void Target();
 

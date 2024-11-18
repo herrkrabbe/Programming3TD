@@ -6,6 +6,7 @@
 #include <TDPlayerController.h>
 
 #include "BuildingSlot.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ATDPlayerCharacter::ATDPlayerCharacter()
@@ -16,6 +17,7 @@ ATDPlayerCharacter::ATDPlayerCharacter()
 
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	CameraSpringArm->SetupAttachment(GetRootComponent());
+	
 
 	/*Camera Component*/
 	IsometricCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -52,6 +54,8 @@ void ATDPlayerCharacter::BeginPlay()
 		UE_LOG(LogTemp, Log, TEXT("Something didn't work"));
 	}
 
+	//Saving Player Controller
+	SavedPlayerController = Cast<ATDPlayerController>(PlayerController);
 }
 
 // Called every frame
@@ -67,10 +71,14 @@ void ATDPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATDPlayerCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATDPlayerCharacter::LookAround);
 		EnhancedInputComponent->BindAction(TargetAction, ETriggerEvent::Triggered, this, &ATDPlayerCharacter::Target);
 	}
 
+}
+
+void ATDPlayerCharacter::AddBuildableTowers()
+{
+	BuildableTowers += BuildableTowersPerWave;
 }
 
 void ATDPlayerCharacter::Move(const FInputActionValue& Value)
@@ -84,16 +92,6 @@ void ATDPlayerCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void ATDPlayerCharacter::LookAround(const FInputActionValue& Value)
-{
-	FVector2D LookAroundVector = Value.Get<FVector2D>();
-
-	if (Controller != nullptr)
-	{
-		AddControllerYawInput(-LookAroundVector.X);
-		AddControllerPitchInput(LookAroundVector.Y);
-	}
-}
 void ATDPlayerCharacter::Target()
 {
 	TEnumAsByte<ECollisionChannel> StandardCollisionChannel;
@@ -101,11 +99,22 @@ void ATDPlayerCharacter::Target()
 
 	GetLocalViewingPlayerController()->GetHitResultUnderCursor(StandardCollisionChannel, false, TargetResults);
 
+	//Check so that you can only build when wave is not active
+	if (BuildableTowers <= 0)
+	{
+		return;
+	}
+	if (SavedPlayerController->GetIsWaveActive())
+	{
+		return;
+	}
+
 	if (ATDPlayerController* PlayerController = Cast<ATDPlayerController>(GetLocalViewingPlayerController()))
 	{
 		if (ABuildingSlot* TargetActor = Cast<ABuildingSlot>(TargetResults.GetActor()))
 		{
 			TargetActor->Build();
+			BuildableTowers--;
 
 		}
 	}
