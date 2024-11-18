@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "TDPlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "TDPlayerCharacter.generated.h"
@@ -34,6 +35,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* CharacterMesh;
 
+	/*
+	 * Reference to PlayerController, as it is used often
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<ATDPlayerController> SavedPlayerController;
+
 
 	/*
 	 * Input Mapping Context and Actions
@@ -45,14 +52,9 @@ public:
 	UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* TargetAction;
 
 	void Move(const FInputActionValue& Value);
-
-	void LookAround(const FInputActionValue& Value);
 
 	void Target();
 
