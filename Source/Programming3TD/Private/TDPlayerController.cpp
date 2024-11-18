@@ -66,6 +66,11 @@ void ATDPlayerController::LoseGame()
 	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, true);
 }
 
+bool ATDPlayerController::GetIsWaveActive() const
+{
+	return bWaveIsActive;
+}
+
 void ATDPlayerController::StartWave()
 {
 	if (!HasWaveManager())
@@ -74,6 +79,7 @@ void ATDPlayerController::StartWave()
 	}
 
 	WaveManager->StartWave();
+	bWaveIsActive = true;
 }
 
 void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)

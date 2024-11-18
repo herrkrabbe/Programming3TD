@@ -94,6 +94,12 @@ void ATDPlayerCharacter::Target()
 
 	GetLocalViewingPlayerController()->GetHitResultUnderCursor(StandardCollisionChannel, false, TargetResults);
 
+	//Check so that you can only build when wave is not active
+	if (SavedPlayerController->GetIsWaveActive())
+	{
+		return;
+	}
+
 	if (ATDPlayerController* PlayerController = Cast<ATDPlayerController>(GetLocalViewingPlayerController()))
 	{
 		if (ABuildingSlot* TargetActor = Cast<ABuildingSlot>(TargetResults.GetActor()))
