@@ -17,6 +17,11 @@ class PROGRAMMING3TD_API ATDPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+private:
+	//How many tower can currently be built
+	int32 BuildableTowers = 3;
+	//How many more towers can be built after a wave has ended
+	int32 BuildableTowersPerWave = 3;
 public:
 	// Sets default values for this character's properties
 	ATDPlayerCharacter();
@@ -41,7 +46,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<ATDPlayerController> SavedPlayerController;
 
-
+	UFUNCTION(BlueprintCallable)
+	void AddBuildableTowers();
 	/*
 	 * Input Mapping Context and Actions
 	 */

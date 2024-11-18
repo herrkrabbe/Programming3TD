@@ -4,6 +4,7 @@
 
 
 #include "TDPlayerController.h"
+#include "TDPlayerCharacter.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -80,6 +81,7 @@ void ATDPlayerController::StartWave()
 
 	WaveManager->StartWave();
 	bWaveIsActive = true;
+	Cast<ATDPlayerCharacter>(GetCharacter())->AddBuildableTowers();
 }
 
 void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)

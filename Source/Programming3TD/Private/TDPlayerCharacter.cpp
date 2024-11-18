@@ -76,6 +76,11 @@ void ATDPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 }
 
+void ATDPlayerCharacter::AddBuildableTowers()
+{
+	BuildableTowers += BuildableTowersPerWave;
+}
+
 void ATDPlayerCharacter::Move(const FInputActionValue& Value)
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
@@ -95,6 +100,10 @@ void ATDPlayerCharacter::Target()
 	GetLocalViewingPlayerController()->GetHitResultUnderCursor(StandardCollisionChannel, false, TargetResults);
 
 	//Check so that you can only build when wave is not active
+	if (BuildableTowers <= 0)
+	{
+		return;
+	}
 	if (SavedPlayerController->GetIsWaveActive())
 	{
 		return;
@@ -105,6 +114,7 @@ void ATDPlayerCharacter::Target()
 		if (ABuildingSlot* TargetActor = Cast<ABuildingSlot>(TargetResults.GetActor()))
 		{
 			TargetActor->Build();
+			BuildableTowers--;
 
 		}
 	}
