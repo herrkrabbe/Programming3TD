@@ -66,9 +66,13 @@ private:
 	TDeque<TObjectPtr<AGraphNode>> Path;
 
 
+	float TimeUntilSpawn;
+	float SpawnRateInSeconds = 2.0f;
+
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wave")
-	int64 NewEnemiesPerWave;
+	int64 NewEnemiesPerWave = 2;
 
 	TDeque<TObjectPtr<AAbstractEnemy>> NewEnemiesQueue;
 
@@ -113,6 +117,9 @@ public:
 	*/
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void AddNewEnemy(AAbstractEnemy* newEnemy);
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enemyClass);
 
 	/*
 	* A test function to spawn an enemy.

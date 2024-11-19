@@ -26,6 +26,17 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!bIsWaveActive) return;
+
+	if (EnemiesInWaveStack.IsEmpty()) return;
+
+	TimeUntilSpawn -= DeltaTime;
+
+	if (TimeUntilSpawn > 0) return;
+
+	TimeUntilSpawn = SpawnRateInSeconds;
+	SpawnNextEnemy();
+
 }
 
 void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -69,6 +80,8 @@ void AAbstractWaveManager::StartWave()
 	bIsWaveActive = true;
 
 	CreatePath();
+
+	TimeUntilSpawn = SpawnRateInSeconds;
 }
 
 void AAbstractWaveManager::EndWave()
@@ -112,6 +125,24 @@ void AAbstractWaveManager::AddNewEnemy(AAbstractEnemy* newEnemy)
 {
 	if (!bIsWaveActive) return;
 	EnemiesInWaveStack.Push(newEnemy);
+}
+
+void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enemyClass)
+{
+	if (!bIsWaveActive) return;
+	
+	if (enemyClass == nullptr) return;
+
+	UWorld* const World = GetWorld();
+	if (World == nullptr) return;
+
+	//Set Spawn Collision Handling Override
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AAbstractEnemy* enemy = World->SpawnActor<AAbstractEnemy>(enemyClass, GetActorLocation(), FRotator::ZeroRotator, ActorSpawnParams);
+
+	AddNewEnemy(enemy);
 }
 
 void AAbstractWaveManager::SpawnNextEnemy()
