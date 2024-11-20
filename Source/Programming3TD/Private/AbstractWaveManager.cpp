@@ -26,14 +26,17 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("tick"));
+
 	if (!bIsWaveActive) return;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("wave is active"));
 
 	if (EnemiesInWaveStack.IsEmpty()) return;
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("decrease timer"));
 	TimeUntilSpawn -= DeltaTime;
 
 	if (TimeUntilSpawn > 0) return;
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Spawning enemy"));
 	TimeUntilSpawn = SpawnRateInSeconds;
 	SpawnNextEnemy();
 
@@ -59,7 +62,7 @@ void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AAbstractWaveManager::StartWave()
 {
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("attempting to start wave"));
+	
 	if (StartNode == nullptr || EndNode == nullptr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("start node or end node is missing"));
@@ -67,8 +70,12 @@ void AAbstractWaveManager::StartWave()
 		return;
 	}
 
-	if (bIsWaveActive) return; //can't start wave if wave is already active
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("wave is inactive"));
+	if (bIsWaveActive) //can't start wave if wave is already active
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("wave is inactive"));
+		return;
+	}
+	
 	if (NewEnemiesQueue.IsEmpty()) //can't start a wave if the final wave has already been spawned
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("no enemies in queue"));
@@ -77,13 +84,12 @@ void AAbstractWaveManager::StartWave()
 
 
 	//TODO: run pathfinding algorithm to find path from StartNode to EndNode
-
+	AddNewEnemiesToWave();
 	//TODO: check if pathfinding algorithm was successful
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("wave started"));
 	EnemiesInWaveStack = DeadEnemyStack;
 	DeadEnemyStack.Empty();
 
-	AddNewEnemiesToWave();
+	
 	EnemiesInWave = EnemiesInWaveStack.Num();
 
 	bIsWaveActive = true;
@@ -133,7 +139,7 @@ void AAbstractWaveManager::AddDeadEnemy(TObjectPtr<AAbstractEnemy> enemy)
 void AAbstractWaveManager::AddNewEnemy(AAbstractEnemy* newEnemy)
 {
 	if (bIsWaveActive) return;
-	EnemiesInWaveStack.Push(newEnemy);
+	NewEnemiesQueue.PushLast(newEnemy);
 }
 
 void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enemyClass)
