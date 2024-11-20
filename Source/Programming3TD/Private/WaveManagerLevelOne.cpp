@@ -12,7 +12,6 @@ AWaveManagerLevelOne::AWaveManagerLevelOne() : AAbstractWaveManager()
 void AWaveManagerLevelOne::BeginPlay() 
 {
     Super::BeginPlay(); //calls the function from parent, i.e. AAbstractWaveManager
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("WaveManagerLevelOne BeginPlay called"));
     
 
     //to do: spawn enmies, add enms to q, move enemies to start locations 

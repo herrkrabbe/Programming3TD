@@ -58,19 +58,29 @@ void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AAbstractWaveManager::StartWave()
 {
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("attempting to start wave"));
 	if (StartNode == nullptr || EndNode == nullptr)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("start node or end node is missing"));
 		UE_LOG(LogTemp, Error, TEXT("StartNode is nullptr"));
 		return;
 	}
 
 	if (bIsWaveActive) return; //can't start wave if wave is already active
-	if (NewEnemiesQueue.IsEmpty()) return; //can't start a wave if the final wave has already been spawned
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("wave is inactive"));
+	if (NewEnemiesQueue.IsEmpty()) //can't start a wave if the final wave has already been spawned
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("no enemies in queue"));
+		EndWave();
+		return;
+	}
+
 
 	//TODO: run pathfinding algorithm to find path from StartNode to EndNode
 
 	//TODO: check if pathfinding algorithm was successful
-
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("wave started"));
 	EnemiesInWaveStack = DeadEnemyStack;
 	DeadEnemyStack.Empty();
 
@@ -123,13 +133,13 @@ void AAbstractWaveManager::AddDeadEnemy(TObjectPtr<AAbstractEnemy> enemy)
 
 void AAbstractWaveManager::AddNewEnemy(AAbstractEnemy* newEnemy)
 {
-	if (!bIsWaveActive) return;
+	if (bIsWaveActive) return;
 	EnemiesInWaveStack.Push(newEnemy);
 }
 
 void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enemyClass)
 {
-	if (!bIsWaveActive) return;
+	if (bIsWaveActive) return;
 	
 	if (enemyClass == nullptr) 
 	{
