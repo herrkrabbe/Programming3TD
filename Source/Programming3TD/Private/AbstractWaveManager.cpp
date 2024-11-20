@@ -72,7 +72,6 @@ void AAbstractWaveManager::StartWave()
 	if (NewEnemiesQueue.IsEmpty()) //can't start a wave if the final wave has already been spawned
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("no enemies in queue"));
-		EndWave();
 		return;
 	}
 
