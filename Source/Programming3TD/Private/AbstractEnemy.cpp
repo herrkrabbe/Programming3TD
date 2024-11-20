@@ -12,12 +12,8 @@ AAbstractEnemy::AAbstractEnemy()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	queueIndex = 0;
-	isAlive = false;
-	speed = 100;
-	healthMax = 1;
-	healthCurrent = healthMax;
-	DamageDealt = 5;
+	OverlapSphere = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapSphere"));
+	OverlapSphere->InitSphereRadius(2.0f);
 
 }
 
@@ -25,7 +21,19 @@ AAbstractEnemy::AAbstractEnemy()
 void AAbstractEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	queueIndex = 0;
+	isAlive = false;
+	speed = 100;
+	healthMax = 1;
+	healthCurrent = healthMax;
+	DamageDealt = 5;
 	
+}
+
+void AAbstractEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	pathQueue.Empty();
 }
 
 // Called every frame

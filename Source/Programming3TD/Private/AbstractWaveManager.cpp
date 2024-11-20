@@ -17,8 +17,8 @@ AAbstractWaveManager::AAbstractWaveManager()
 // Called when the game starts or when spawned
 void AAbstractWaveManager::BeginPlay()
 {
-	Super::BeginPlay();
 	
+	Super::BeginPlay();
 }
 
 // Called every frame
@@ -26,32 +26,77 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("tick"));
+
+	if (!bIsWaveActive) return;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("wave is active"));
+
+	if (EnemiesInWaveStack.IsEmpty()) return;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("decrease timer"));
+	TimeUntilSpawn -= DeltaTime;
+
+	if (TimeUntilSpawn > 0) return;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Spawning enemy"));
+	TimeUntilSpawn = SpawnRateInSeconds;
+	SpawnNextEnemy();
+
+}
+
+void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	NewEnemiesQueue.Empty();
+	EnemiesInWaveStack.Empty();
+	DeadEnemyStack.Empty();
+
+	// pointer reset
+	StartNode = nullptr;
+	EndNode = nullptr;
+
+	UE_LOG(LogTemp, Warning, TEXT("Wave Manager EndPlay: Cleaned up wave resources"));
+	//remove all enemies. remove queues-- 
+	// empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 }
 
 void AAbstractWaveManager::StartWave()
 {
+
+	
 	if (StartNode == nullptr || EndNode == nullptr)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("start node or end node is missing"));
 		UE_LOG(LogTemp, Error, TEXT("StartNode is nullptr"));
 		return;
 	}
 
-	if (bIsWaveActive) return; //can't start wave if wave is already active
-	if (NewEnemiesQueue.IsEmpty()) return; //can't start a wave if the final wave has already been spawned
+	if (bIsWaveActive) //can't start wave if wave is already active
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("wave is inactive"));
+		return;
+	}
+	
+	if (NewEnemiesQueue.IsEmpty()) //can't start a wave if the final wave has already been spawned
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("no enemies in queue"));
+		return;
+	}
+
 
 	//TODO: run pathfinding algorithm to find path from StartNode to EndNode
-
+	AddNewEnemiesToWave();
 	//TODO: check if pathfinding algorithm was successful
-
 	EnemiesInWaveStack = DeadEnemyStack;
 	DeadEnemyStack.Empty();
 
-	AddNewEnemiesToWave();
+	
 	EnemiesInWave = EnemiesInWaveStack.Num();
 
 	bIsWaveActive = true;
 
 	CreatePath();
+
+	TimeUntilSpawn = SpawnRateInSeconds;
 }
 
 void AAbstractWaveManager::EndWave()
@@ -93,8 +138,38 @@ void AAbstractWaveManager::AddDeadEnemy(TObjectPtr<AAbstractEnemy> enemy)
 
 void AAbstractWaveManager::AddNewEnemy(AAbstractEnemy* newEnemy)
 {
-	if (!bIsWaveActive) return;
-	EnemiesInWaveStack.Push(newEnemy);
+	if (bIsWaveActive) return;
+	NewEnemiesQueue.PushLast(newEnemy);
+}
+
+void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enemyClass)
+{
+	if (bIsWaveActive) return;
+	
+	if (enemyClass == nullptr) 
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy class is nullptr"));
+		return;
+	}
+
+	UWorld* const World = GetWorld();
+	if (World == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("World is nullptr"));
+		return;
+	}
+
+	//Set Spawn Collision Handling Override
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	AAbstractEnemy* enemy = World->SpawnActor<AAbstractEnemy>(enemyClass, GetActorLocation(), FRotator::ZeroRotator, ActorSpawnParams);
+
+	if (enemy == nullptr) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("failed to spawn"));
+	}
+
+	AddNewEnemy(enemy);
 }
 
 void AAbstractWaveManager::SpawnNextEnemy()
@@ -149,4 +224,3 @@ int64 AAbstractWaveManager::AddNewEnemiesToWave()
 	}
 	return enemiesAdded;
 }
-

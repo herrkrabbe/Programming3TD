@@ -3,7 +3,7 @@
 
 #include "RunnerEnemy.h"
 
-ARunnerEnemy::ARunnerEnemy()
+ARunnerEnemy::ARunnerEnemy() : AAbstractEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	queueIndex = 0;
@@ -11,4 +11,24 @@ ARunnerEnemy::ARunnerEnemy()
 	healthMax = 1;
 	healthCurrent = healthMax;
 	DamageDealt = 3;
+}
+
+void ARunnerEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	queueIndex = 0;
+	isAlive = false;
+	healthMax = 1;
+	healthCurrent = healthMax;
+	DamageDealt = 3;
+}
+
+void ARunnerEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+}
+
+void ARunnerEnemy::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
