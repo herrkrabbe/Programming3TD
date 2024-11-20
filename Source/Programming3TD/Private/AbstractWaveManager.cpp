@@ -131,16 +131,28 @@ void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enem
 {
 	if (!bIsWaveActive) return;
 	
-	if (enemyClass == nullptr) return;
+	if (enemyClass == nullptr) 
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy class is nullptr"));
+		return;
+	}
 
 	UWorld* const World = GetWorld();
-	if (World == nullptr) return;
+	if (World == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("World is nullptr"));
+		return;
+	}
 
 	//Set Spawn Collision Handling Override
 	FActorSpawnParameters ActorSpawnParams;
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	AAbstractEnemy* enemy = World->SpawnActor<AAbstractEnemy>(enemyClass, GetActorLocation(), FRotator::ZeroRotator, ActorSpawnParams);
+
+	if (enemy == nullptr) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("failed to spawn"));
+	}
 
 	AddNewEnemy(enemy);
 }
