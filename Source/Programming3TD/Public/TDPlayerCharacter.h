@@ -17,9 +17,11 @@ class PROGRAMMING3TD_API ATDPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-private:
+public:
 	//How many tower can currently be built
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 BuildableTowers = 3;
+private:
 	//How many more towers can be built after a wave has ended
 	int32 BuildableTowersPerWave = 3;
 public:

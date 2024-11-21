@@ -20,7 +20,6 @@ private:
 	int64 HPCurrent;
 	int64 HPMax;
 	TObjectPtr<AAbstractWaveManager> WaveManager;
-	bool bWaveIsActive = false;
 
 public:
 	ATDPlayerController();

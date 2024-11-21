@@ -69,7 +69,7 @@ void ATDPlayerController::LoseGame()
 
 bool ATDPlayerController::GetIsWaveActive() const
 {
-	return bWaveIsActive;
+	return WaveManager->bIsWaveActive;
 }
 
 void ATDPlayerController::StartWave()
@@ -80,7 +80,6 @@ void ATDPlayerController::StartWave()
 	}
 
 	WaveManager->StartWave();
-	bWaveIsActive = true;
 	Cast<ATDPlayerCharacter>(GetCharacter())->AddBuildableTowers();
 }
 
