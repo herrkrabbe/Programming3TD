@@ -113,8 +113,10 @@ void ATDPlayerCharacter::Target()
 	{
 		if (ABuildingSlot* TargetActor = Cast<ABuildingSlot>(TargetResults.GetActor()))
 		{
-			TargetActor->Build();
-			BuildableTowers--;
+			if(TargetActor->Build())
+			{
+				BuildableTowers--;
+			}
 
 		}
 	}

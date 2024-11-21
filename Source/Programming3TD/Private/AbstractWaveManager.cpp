@@ -26,13 +26,9 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("tick"));
-
 	if (!bIsWaveActive) return;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("wave is active"));
 
 	if (EnemiesInWaveStack.IsEmpty()) return;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("decrease timer"));
 	TimeUntilSpawn -= DeltaTime;
 
 	if (TimeUntilSpawn > 0) return;
