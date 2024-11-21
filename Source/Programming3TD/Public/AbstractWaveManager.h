@@ -57,11 +57,13 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Wave", meta = (AllowPrivateAccess = "true"))
 	int64 EnemiesInWave;
 
+public:
 	/*
 	* Is the wave ongoing?
 	*/
 	UPROPERTY(BlueprintReadWrite, Category = "Wave", meta = (AllowPrivateAccess = "true"))
 	bool bIsWaveActive = false;
+private:
 
 	TDeque<TObjectPtr<AGraphNode>> Path;
 
