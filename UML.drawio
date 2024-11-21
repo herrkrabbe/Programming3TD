@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="24.8.6">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="2390" dy="618" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2390" dy="1445" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -86,16 +86,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="abqN74poVczzxeBeDxSv-4" value="TDPlayerController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="-350" y="60" width="320" height="184" as="geometry" />
+          <mxGeometry x="-490" y="-270" width="480" height="300" as="geometry" />
         </mxCell>
-        <mxCell id="abqN74poVczzxeBeDxSv-5" value="+ HPCurrent: int64&lt;div&gt;+ HPMax: int64&lt;/div&gt;&lt;div&gt;+ WaveManager: TObjectPtr&amp;lt;AAbstractWaveManager&amp;gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="abqN74poVczzxeBeDxSv-4" vertex="1">
-          <mxGeometry y="26" width="320" height="124" as="geometry" />
+        <mxCell id="abqN74poVczzxeBeDxSv-5" value="- HPCurrent: int64&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- HPMax: int64&lt;/span&gt;&lt;div&gt;- WaveManager: TObjectPtr&amp;lt;AAbstractWaveManager&amp;gt;&lt;/div&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="abqN74poVczzxeBeDxSv-4" vertex="1">
+          <mxGeometry y="26" width="480" height="54" as="geometry" />
         </mxCell>
         <mxCell id="abqN74poVczzxeBeDxSv-6" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="abqN74poVczzxeBeDxSv-4" vertex="1">
-          <mxGeometry y="150" width="320" height="8" as="geometry" />
+          <mxGeometry y="80" width="480" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="abqN74poVczzxeBeDxSv-7" value="+ AddDeadEnemy(enemy: TObjectPtr&amp;lt;AActor&amp;gt;): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="abqN74poVczzxeBeDxSv-4" vertex="1">
-          <mxGeometry y="158" width="320" height="26" as="geometry" />
+        <mxCell id="abqN74poVczzxeBeDxSv-7" value="+ AddDeadEnemy(enemy: TObjectPtr&amp;lt;AAbstractEnemy&amp;gt;): void&lt;div&gt;+ ATDPlayerController()&lt;/div&gt;&lt;div&gt;+ GameEnded(): void&lt;/div&gt;&lt;div&gt;+&amp;nbsp;&lt;b&gt;GetHPCurrent(): int64&lt;/b&gt;&lt;/div&gt;&lt;div&gt;+&amp;nbsp;&lt;b style=&quot;background-color: initial;&quot;&gt;GetHPMax(): int64&lt;/b&gt;&lt;/div&gt;&lt;div&gt;+ &lt;b&gt;GetIsWaveActive(): bool&lt;/b&gt;&lt;/div&gt;&lt;div&gt;+ &lt;b&gt;HasWaveManager(): bool&lt;/b&gt;&lt;/div&gt;&lt;div&gt;+ LoseGame(): void&lt;/div&gt;&lt;div&gt;+ LoseHealth(DamageTaken: int64): void&lt;/div&gt;&lt;div&gt;+ Reset(): void&lt;/div&gt;&lt;div&gt;+ SetMaxHP(newMaxHP: int64): void&lt;/div&gt;&lt;div&gt;+ SetWaveManager(newWaveManager:&amp;nbsp;AAbstractWaveManager*): void&lt;/div&gt;&lt;div&gt;+ StartWave(): void&lt;/div&gt;&lt;div&gt;+&amp;nbsp;WaveEnded(): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="abqN74poVczzxeBeDxSv-4" vertex="1">
+          <mxGeometry y="88" width="480" height="212" as="geometry" />
         </mxCell>
         <mxCell id="abqN74poVczzxeBeDxSv-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=diamondThin;startFill=0;endArrow=none;endFill=0;endSize=12;startSize=12;strokeWidth=2;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="abqN74poVczzxeBeDxSv-5" target="bVRjCQ_B58bXz5kEhXcc-0" edge="1">
           <mxGeometry relative="1" as="geometry" />
