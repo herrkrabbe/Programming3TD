@@ -33,11 +33,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building", meta=(AllowPrivateAccess="true"))
 	bool hasBuilding = false;
 
-	/*
-	* Auxiliary array to AdjacencyMap. When a new BuildingSlot is added to the AdjacencyMap, it is also added to this array.
-	* This way, GetAdjacencent happens on time O(1) instead of an uncertain Big O.
-	*/
-	TArray<ABuildingSlot*> ArrayOfAdjacencyMap;
 
 	/*
 	* The BuildingSlot that is the end node for the A* algorithm.

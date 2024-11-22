@@ -26,7 +26,6 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 	if (!bIsWaveActive) return;
 
 	if (EnemiesInWaveStack.IsEmpty()) return;
