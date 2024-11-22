@@ -95,8 +95,3 @@ void AAbstractTower::Tick(float DeltaTime)
 	TowerAttack(DeltaTime);
 
 }
-
-int32 AAbstractTower::GetThreatlevel()
-{
-	return ThreatLevel;
-}

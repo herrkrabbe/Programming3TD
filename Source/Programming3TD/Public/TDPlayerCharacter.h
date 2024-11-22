@@ -20,10 +20,10 @@ class PROGRAMMING3TD_API ATDPlayerCharacter : public ACharacter
 public:
 	//How many tower can currently be built
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 BuildableTowers = 3;
+	int64 BuildableTowers = 3;
 private:
 	//How many more towers can be built after a wave has ended
-	int32 BuildableTowersPerWave = 3;
+	int64 BuildableTowersPerWave = 3;
 public:
 	// Sets default values for this character's properties
 	ATDPlayerCharacter();
