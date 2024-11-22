@@ -40,7 +40,6 @@ bool ABuildingSlot::Build()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	ChildTower = GetWorld()->SpawnActor<AAbstractTower>(TowerClass, GetActorLocation(), GetActorRotation(), SpawnParams);
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Tower built"));
 	hasBuilding = true;
 	if (ChildTower)
 	{

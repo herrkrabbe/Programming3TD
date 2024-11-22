@@ -10,14 +10,19 @@ UValueNode::UValueNode()
 	State = nullptr;
 }
 
-UValueNode::UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates)
+UValueNode::UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost)
 {
-	State = newState;
-	heuristic = endCoordinates.Dist(newState->GetActorLocation(),endCoordinates);
+	Initialize(newState, endCoordinates, extraCost);
 }
 
-void UValueNode::Initialize(TObjectPtr<AGraphNode> newState, FVector endCoordinates)
+void UValueNode::Initialize(TObjectPtr<AGraphNode> newState, FVector endCoordinates, float extraCost)
 {
 	State = newState;
 	heuristic = endCoordinates.Dist(newState->GetActorLocation(), endCoordinates);
+	SetExtraCost(extraCost);
+}
+
+void UValueNode::SetExtraCost(float extraCost)
+{
+	cost = State->GetThreatLevel() + extraCost;
 }

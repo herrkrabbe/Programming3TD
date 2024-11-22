@@ -30,7 +30,7 @@ public:
 	* newState is collecting the state of AGraphNode, transforming it to a new float for ValueNode.
 	* endCoordinates are the *new* heuristic values based on FVector:Dist("euclidean") 2 values, newStates location, and endCoordinates.
 	*/
-	UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates);
+	UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f);
 
 	/*
 	* Initialises the field variables of the ValueNode.
@@ -38,7 +38,7 @@ public:
 	* @param newState is the GraphNode the ValueNode represents.
 	* @param endCoordinates are the coordinates of the end node of the path.
 	*/
-	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates);
+	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f);
 	
 	TObjectPtr<AGraphNode>GetState() const { return State; };
 
@@ -49,13 +49,32 @@ public:
 		return GetValue() < other.GetValue();
 	};
 	
-	/* Getcost of graphnode + heuristic, does not include cost from parent to 
-	* @return GetThreatlevel+heuristic(valuenode)
+	/* Getcost of graphnode + heuristic + extraCost, where extra cost should be the extra cost from the parent. 
+	* @return cost+heuristic(valuenode)
 	*/
-	float GetValue() const { return State->GetThreatLevel() + heuristic; };
+	float GetValue() const { return cost + heuristic; };
+
+	/*
+	* Get the cost of the node.
+	* @return cost from state + extra cost
+	*/
+	float GetCost() const { return cost; };
+
+	/*
+	* Get the heuristic of the node.
+	* @return heuristic
+	*/
+	float GetHeuristic() const { return heuristic; };
+
+	/*
+	* Set the extra cost of the node. Should be called only when parent changes.
+	* @param extraCost is the cost of the parent node
+	*/
+	void SetExtraCost(float extraCost);
 
 private:
 	float heuristic;
+	float cost;
 	TObjectPtr<AGraphNode> State;
 
 };
