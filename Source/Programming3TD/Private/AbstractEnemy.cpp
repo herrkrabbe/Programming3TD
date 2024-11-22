@@ -50,7 +50,6 @@ void AAbstractEnemy::Tick(float DeltaTime)
 
 void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Setting pathqueue"));
 	this->pathQueue = PathQueue;
 	if (pathQueue.IsEmpty()) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to set PathQueue"));

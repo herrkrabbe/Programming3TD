@@ -84,6 +84,7 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 	// Stores the states that have already been evaluated
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
 	CostMap.Add(start, start->GetThreatLevel());
+	GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Yellow, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *start->GetActorLabel(), startValueNode->GetCost(), CostMap[startValueNode->GetState()]));
 
 	// Stores the parent of each node
 	TMap<TObjectPtr<UValueNode>, TObjectPtr<UValueNode>> ParentMap;
@@ -110,16 +111,25 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 			if (neighbour == CurrentNode->GetState()) {
 				continue; //skip if the neighbour is self
 			}
+			float distanceCost = FVector::Distance(neighbour->GetActorLocation(), CurrentNode->GetState()->GetActorLocation());
+			float parentCost = CostMap[CurrentNode->GetState()];
+			float inheritedCost = distanceCost + parentCost;
 
-			float newCost = CostMap[CurrentNode->GetState()] + neighbour->GetThreatLevel() + FVector::Distance(neighbour->GetActorLocation(), CurrentNode->GetState()->GetActorLocation());
+			float stateCost = neighbour->GetThreatLevel();
+
+			float newCost = stateCost + inheritedCost;
 			if (!CostMap.Contains(neighbour) || newCost < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
 				TObjectPtr<UValueNode> neighbourValueNode = NewObject<UValueNode>();
-				neighbourValueNode->Initialize(neighbour, endCoordinates);
+				neighbourValueNode->Initialize(neighbour, endCoordinates, inheritedCost);
 				
 				CostMap.Add(neighbour, newCost);
 				OpenQueue.HeapPush(*neighbourValueNode);
 				ParentMap.Add(neighbourValueNode, CurrentNode);
-				GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red, FString::Printf(TEXT("Node: %s, Value: %f, Heuristic: %f, Cost: %f"), *neighbour->GetName(), neighbourValueNode->GetValue(), (neighbourValueNode->GetValue()-CostMap[neighbour]), CostMap[neighbour]));
+
+				if (neighbourValueNode->GetCost() != CostMap[neighbourValueNode->GetState()]) {
+					GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Green, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *neighbour->GetActorLabel(), neighbourValueNode->GetCost(), CostMap[neighbourValueNode->GetState()]));
+				}
+				
 			}
 		}
 	}
