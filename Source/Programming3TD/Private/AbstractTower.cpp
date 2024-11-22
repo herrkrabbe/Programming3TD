@@ -41,8 +41,6 @@ void AAbstractTower::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AAbstractTower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Overlapped"));
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Overlapped"));
 
 	//This gave false negatives, so it is currently disabled
 	/*if (bFromSweep == false)
@@ -53,11 +51,8 @@ void AAbstractTower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	else */if (OtherActor == Cast<AAbstractEnemy>(OtherActor))
 	{
 		EnemiesList.PushLast(Cast<AAbstractEnemy>(OtherActor));
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Target Acquired"));
 		return;
 	}
-
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Wrong class"));
 }
 
 void AAbstractTower::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -99,9 +94,4 @@ void AAbstractTower::Tick(float DeltaTime)
 
 	TowerAttack(DeltaTime);
 
-}
-
-int32 AAbstractTower::GetThreatlevel()
-{
-	return ThreatLevel;
 }

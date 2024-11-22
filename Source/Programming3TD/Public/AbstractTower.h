@@ -19,7 +19,7 @@ public:
 	AAbstractTower();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-	int32 AttackDamage;
+	int64 AttackDamage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
 	float AttackSpeed;
@@ -34,7 +34,7 @@ public:
 	UStaticMeshComponent* TowerMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes")
-	int32 ThreatLevel;
+	int64 ThreatLevel;
 
 	TDeque<TObjectPtr<AAbstractEnemy>> EnemiesList;
 
@@ -65,5 +65,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	int32 GetThreatlevel();
+	int64 GetThreatlevel() const {
+		return ThreatLevel;
+	};
 };

@@ -32,7 +32,6 @@ void AAbstractWaveManager::Tick(float DeltaTime)
 	TimeUntilSpawn -= DeltaTime;
 
 	if (TimeUntilSpawn > 0) return;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Spawning enemy"));
 	TimeUntilSpawn = SpawnRateInSeconds;
 	SpawnNextEnemy();
 
