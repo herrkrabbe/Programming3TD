@@ -33,6 +33,7 @@ protected:
 	int64 AfterRegenHP;
 
 private:
+
 	void RegenHP();
 
 };
