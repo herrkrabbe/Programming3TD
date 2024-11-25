@@ -25,6 +25,7 @@ void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	pathQueue.Empty();
 }
 
+
 void ARegenEnemy::RegenHP() 
 {
 	//holds value og regen+hp
@@ -33,7 +34,10 @@ void ARegenEnemy::RegenHP()
 	if (AfterRegenHP >= healthMax)
 	{
 		healthCurrent = healthMax;
+		GEngine->AddOnScreenDebugMessage(-1, 2f, FColor::Blue, TEXT("Health is max"));
 		return;
 	}
 	healthCurrent = AfterRegenHP;
+	GEngine->AddOnScreenDebugMessage(-1, 2f, FColor::Blue, TEXT("Recovered health"));
+
 }
