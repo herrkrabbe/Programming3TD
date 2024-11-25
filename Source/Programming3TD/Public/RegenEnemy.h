@@ -26,8 +26,8 @@ protected:
 	// Called when the game starts or when spawned
 
 	virtual void BeginPlay() override;
-
-
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 protected:
 
 	//Integer for HPRegen
@@ -36,6 +36,6 @@ protected:
 	int64 AfterRegenHP; 
 
 private:
-	
 	void RegenHP();
+
 };

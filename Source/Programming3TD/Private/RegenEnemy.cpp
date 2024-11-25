@@ -16,6 +16,13 @@ void ARegenEnemy::BeginPlay()
 	void regenHP();
 }
 
+void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	//precaution
+	pathQueue.Empty();
+}
+
 void ARegenEnemy::RegenHP() 
 {
 	//holds value og regen+hp
