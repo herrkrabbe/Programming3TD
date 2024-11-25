@@ -15,6 +15,9 @@ class PROGRAMMING3TD_API ARegenEnemy : public AAbstractEnemy
 {
 	GENERATED_BODY()
 
+	//AAbstractEnemy();
+	ARegenEnemy();
+
 public:
 
 	 
@@ -29,12 +32,10 @@ protected:
 
 	//Integer for HPRegen
 	int64 healthRegen;
-
-	//Placeholder for new hp value
+	//Integer Placeholder for new hp value
 	int64 AfterRegenHP; 
 
-public:
+private:
 	
 	void RegenHP();
-
 };

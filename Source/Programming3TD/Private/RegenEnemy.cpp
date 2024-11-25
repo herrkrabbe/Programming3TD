@@ -3,7 +3,7 @@
 
 #include "RegenEnemy.h"
 
-void ARegenEnemy::ARegenEnemy()
+ARegenEnemy::ARegenEnemy()
 {
 
 }
@@ -18,7 +18,13 @@ void ARegenEnemy::BeginPlay()
 
 void ARegenEnemy::RegenHP() 
 {
-	healthCurrent*;
+	//holds value og regen+hp
 	AfterRegenHP = healthCurrent + healthRegen;
-	AfterRegenHP = healthCurrent*;
+	
+	if (AfterRegenHP >= healthMax)
+	{
+		healthCurrent = healthMax;
+		return;
+	}
+	healthCurrent = AfterRegenHP;
 }
