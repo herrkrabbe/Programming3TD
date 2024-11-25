@@ -10,6 +10,8 @@ ARegenEnemy::ARegenEnemy()
 
 void ARegenEnemy::BeginPlay()
 {
+	Super::BeginPlay();
+
 	healthCurrent = 3;
 	healthMax = healthCurrent;
 	healthRegen = 1;

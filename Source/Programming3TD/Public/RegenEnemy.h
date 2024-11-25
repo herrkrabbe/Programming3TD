@@ -15,13 +15,10 @@ class PROGRAMMING3TD_API ARegenEnemy : public AAbstractEnemy
 {
 	GENERATED_BODY()
 
-	//AAbstractEnemy();
-	ARegenEnemy();
 
 public:
-
-	 
-	
+	ARegenEnemy();
+		
 protected:
 	// Called when the game starts or when spawned
 
@@ -30,10 +27,10 @@ protected:
 	
 protected:
 
-	//Integer for HPRegen
+	//int number for regen -healthregen
 	int64 healthRegen;
-	//Integer Placeholder for new hp value
-	int64 AfterRegenHP; 
+	//Integer Placeholder for new hp value -healthregen
+	int64 AfterRegenHP;
 
 private:
 	void RegenHP();
