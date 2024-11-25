@@ -3,7 +3,7 @@
 
 #include "RegenEnemy.h"
 
-ARegenEnemy::ARegenEnemy()
+ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 {
 
 }
