@@ -19,14 +19,14 @@ void AWaveManagerLevelOne::BeginPlay()
     // --enemies in q to the start of the level
 
     UE_LOG(LogTemp, Warning, TEXT("BeginPlay called in AWaveManagerLevelOne!"));
-	AddNewEnemyFromClass(WeakEnemyClass);
-	AddNewEnemyFromClass(WeakEnemyClass);
-	AddNewEnemyFromClass(WeakEnemyClass);
-	AddNewEnemyFromClass(StrongEnemyClass);
-	AddNewEnemyFromClass(StrongEnemyClass);
+	AddNewEnemyFromClass(RegenEnemyClass);
+	/*AddNewEnemyFromClass(WeakEnemyClass);
 	AddNewEnemyFromClass(WeakEnemyClass);
 	AddNewEnemyFromClass(StrongEnemyClass);
 	AddNewEnemyFromClass(StrongEnemyClass);
+	AddNewEnemyFromClass(WeakEnemyClass);
+	AddNewEnemyFromClass(StrongEnemyClass);
+	AddNewEnemyFromClass(StrongEnemyClass);*/
 
 }
 
@@ -34,7 +34,7 @@ void AWaveManagerLevelOne::BeginPlay()
 void AWaveManagerLevelOne::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
-    // remove all enemies. remove queues-- 
+    // removes all enemies. remove queues
     // empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 
     UE_LOG(LogTemp, Warning, TEXT("EndPlay called in AWaveManagerLevelOne!"));

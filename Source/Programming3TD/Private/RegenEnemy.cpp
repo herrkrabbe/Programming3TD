@@ -5,13 +5,19 @@
 
 ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 {
-
+	AAbstractEnemy();
+	queueIndex = 0;
+	isAlive = false;
+	healthMax = 3;
+	healthCurrent = healthMax;
+	DamageDealt = 4;
 }
 
 void ARegenEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
+	queueIndex = 0;
+	isAlive = false;
 	healthCurrent = 3;
 	healthMax = healthCurrent;
 	healthRegen = 1;
