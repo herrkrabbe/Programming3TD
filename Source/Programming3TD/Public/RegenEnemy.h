@@ -16,13 +16,25 @@ class PROGRAMMING3TD_API ARegenEnemy : public AAbstractEnemy
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 
+	 
+	
 protected:
 	// Called when the game starts or when spawned
+
 	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+
+protected:
+
+	//Integer for HPRegen
+	int64 healthRegen;
+
+	//Placeholder for new hp value
+	int64 AfterRegenHP; 
 
 public:
+	
+	void RegenHP();
 
 };

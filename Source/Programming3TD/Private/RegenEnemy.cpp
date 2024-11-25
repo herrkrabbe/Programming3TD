@@ -3,10 +3,22 @@
 
 #include "RegenEnemy.h"
 
-void ARegenEnemy::BeginPlay()
+void ARegenEnemy::ARegenEnemy()
 {
+
 }
 
-void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ARegenEnemy::BeginPlay()
 {
+	healthCurrent = 3;
+	healthMax = healthCurrent;
+	healthRegen = 1;
+	void regenHP();
+}
+
+void ARegenEnemy::RegenHP() 
+{
+	healthCurrent*;
+	AfterRegenHP = healthCurrent + healthRegen;
+	AfterRegenHP = healthCurrent*;
 }
