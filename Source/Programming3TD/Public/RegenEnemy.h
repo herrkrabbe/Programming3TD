@@ -34,6 +34,7 @@ protected:
 	//Integer Placeholder for new hp value -healthregen
 	int64 AfterRegenHP;
 
+	float RegenTimer;
 private:
 	
 
