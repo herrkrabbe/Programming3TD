@@ -5,11 +5,13 @@
 
 ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 {
-	queueIndex = 0;
-	isAlive = false;
-	healthMax = 3;
-	healthCurrent = healthMax;
-	DamageDealt = 4;
+}
+
+void ARegenEnemy::Tick(float deltatime)
+{
+	Super::Tick(deltatime);
+	if(isAlive)
+	RegenHP();
 }
 
 void ARegenEnemy::BeginPlay()
@@ -17,10 +19,11 @@ void ARegenEnemy::BeginPlay()
 	Super::BeginPlay();
 	queueIndex = 0;
 	isAlive = false;
-	healthCurrent = 3;
-	healthMax = healthCurrent;
+	healthMax = 3;
+	healthCurrent= healthMax;
 	healthRegen = 1;
-	void regenHP();
+	DamageDealt = 4;
+
 }
 
 void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -33,13 +36,19 @@ void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ARegenEnemy::RegenHP() 
 {
-	//holds value og regen+hp
+	if (healthCurrent == healthMax)
+	{
+		//holds value og regen+hp
+
+		return;
+	}
+	
 	AfterRegenHP = healthCurrent + healthRegen;
 	
 	if (AfterRegenHP >= healthMax)
 	{
 		healthCurrent = healthMax;
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Health is max"));
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Health is max cant heal"));
 		return;
 	}
 

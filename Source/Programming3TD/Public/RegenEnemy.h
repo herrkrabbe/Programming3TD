@@ -18,7 +18,8 @@ class PROGRAMMING3TD_API ARegenEnemy : public AAbstractEnemy
 
 public:
 	ARegenEnemy();
-		
+	
+	virtual void Tick(float deltatime) override;
 protected:
 	// Called when the game starts or when spawned
 
