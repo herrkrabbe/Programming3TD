@@ -10,7 +10,7 @@ ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 void ARegenEnemy::Tick(float deltatime)
 {
 	Super::Tick(deltatime);
-	if (isAlive)
+	if (!isAlive)
 		return;
 	RegenTimer -= deltatime;
 	
