@@ -5,7 +5,6 @@
 
 ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 {
-	AAbstractEnemy();
 	queueIndex = 0;
 	isAlive = false;
 	healthMax = 3;
@@ -43,6 +42,7 @@ void ARegenEnemy::RegenHP()
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Health is max"));
 		return;
 	}
+
 	healthCurrent = AfterRegenHP;
 	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Recovered health"));
 
