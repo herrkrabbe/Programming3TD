@@ -56,11 +56,11 @@ void ARegenEnemy::RegenHP()
 	if (AfterRegenHP > healthMax)
 	{
 		healthCurrent = healthMax;
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Healed max"));
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Healed max"));
 		return;
 	}
 
 	healthCurrent = AfterRegenHP;
-	GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Recovered health"));
+	//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Recovered health"));
 
 }

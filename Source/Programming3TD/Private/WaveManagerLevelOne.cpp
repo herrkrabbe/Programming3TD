@@ -19,14 +19,14 @@ void AWaveManagerLevelOne::BeginPlay()
     // --enemies in q to the start of the level
 
     UE_LOG(LogTemp, Warning, TEXT("BeginPlay called in AWaveManagerLevelOne!"));
-	AddNewEnemyFromClass(RegenEnemyClass);
-	/*AddNewEnemyFromClass(WeakEnemyClass);
+	//AddNewEnemyFromClass(RegenEnemyClass);
+	AddNewEnemyFromClass(WeakEnemyClass);
 	AddNewEnemyFromClass(WeakEnemyClass);
 	AddNewEnemyFromClass(StrongEnemyClass);
 	AddNewEnemyFromClass(StrongEnemyClass);
 	AddNewEnemyFromClass(WeakEnemyClass);
 	AddNewEnemyFromClass(StrongEnemyClass);
-	AddNewEnemyFromClass(StrongEnemyClass);*/
+	AddNewEnemyFromClass(StrongEnemyClass);
 
 }
 
