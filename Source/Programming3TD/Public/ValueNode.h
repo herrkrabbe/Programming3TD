@@ -38,7 +38,7 @@ public:
 	* @param newState is the GraphNode the ValueNode represents.
 	* @param endCoordinates are the coordinates of the end node of the path.
 	*/
-	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f);
+	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f, int32 depth = 0);
 	
 	TObjectPtr<AGraphNode>GetState() const { return State; };
 
@@ -72,10 +72,13 @@ public:
 	*/
 	void SetExtraCost(float extraCost);
 
+	int32 GetDepth() const;
+
 private:
 	float heuristic;
 	float cost;
 	TObjectPtr<AGraphNode> State;
+	int32 Depth;
 
 };
 

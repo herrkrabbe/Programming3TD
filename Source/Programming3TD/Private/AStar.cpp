@@ -120,7 +120,7 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 			float newCost = stateCost + inheritedCost;
 			if (!CostMap.Contains(neighbour) || newCost < CostMap[neighbour]) { //the right side of OR statement only triggers if the map already contains the node
 				TObjectPtr<UValueNode> neighbourValueNode = NewObject<UValueNode>();
-				neighbourValueNode->Initialize(neighbour, endCoordinates, inheritedCost);
+				neighbourValueNode->Initialize(neighbour, endCoordinates, inheritedCost, CurrentNode->GetDepth());
 				
 				CostMap.Add(neighbour, newCost);
 				OpenQueue.HeapPush(*neighbourValueNode);
