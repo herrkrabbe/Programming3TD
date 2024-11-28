@@ -17,9 +17,9 @@ class PROGRAMMING3TD_API UPathQueue : public UObject
 public:
 	UPathQueue();
 
-	UPathQueue(int32 size);
+	//UPathQueue(int32 size);
 
-	UPathQueue(const UPathQueue& original);
+	//UPathQueue(const UPathQueue& original);
 
 	void Set(TObjectPtr<AGraphNode> inserted, int32 insertIndex);
 	
@@ -27,8 +27,10 @@ public:
 
 	void GoNext();
 
-	static UPathQueue CreatePathQueue(int32 size);
+	static TObjectPtr<UPathQueue> CreatePathQueue(int32 size);
+
+	static TObjectPtr<UPathQueue> CreatePathQueue(const UPathQueue& original);
 private:
-	TObjectPtr<TArray<TObjectPtr<AGraphNode>>> PathArray;
+	TArray<TObjectPtr<AGraphNode>>* PathArray;
 	int32 CurrentIndex;
 };
