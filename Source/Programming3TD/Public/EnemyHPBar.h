@@ -6,10 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include <Components/ProgressBar.h>
 #include "EnemyHPBar.generated.h"
-/**
-* Sourced From
- * https://www.youtube.com/watch?v=i8NM4qtsrpo
- */
+
+
 UCLASS()
 class PROGRAMMING3TD_API UEnemyHPBar : public UUserWidget
 {

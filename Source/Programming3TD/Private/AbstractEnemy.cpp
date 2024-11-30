@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include <Subsystems/PanelExtensionSubsystem.h>
 #include "Components/WidgetComponent.h"
+#include <Logging/StructuredLog.h>
 
 // Sets default values
 AAbstractEnemy::AAbstractEnemy()
@@ -24,21 +25,12 @@ AAbstractEnemy::AAbstractEnemy()
 		HPBarWidgetComponent->SetupAttachment(RootComponent);
 		HPBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
 		HPBarWidgetComponent->SetRelativeLocation(HPBarPosition);
-
-		//Set class for widget component to WBP EnemyHPBar
-		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
-		if (HPBarFile.Succeeded()) {
-			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
-			
-		}
-		else {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("HPBarClass is not valid"));
-		}
-	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarWidgetComponent is not valid"));
 	}
 
+	if (HPBarClass == nullptr)
+	{
+		UE_LOGFMT(LogTemp, Display, "HPBarClass null in constructor`");
+	}
 }
 
 // Called when the game starts or when spawned
@@ -52,11 +44,28 @@ void AAbstractEnemy::BeginPlay()
 	healthCurrent = healthMax;
 	DamageDealt = 5;
 
+	//Set class for widget component to WBP EnemyHPBar
+	if (HPBarClass == nullptr) //fallback option if HPBarClass is not set in editor
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass is not set for '{0}'", GetActorLabel()));
+		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
+		if (HPBarFile.Succeeded()) {
+			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass fallback failed for '{0}'", GetActorLabel()));
+			UE_LOGFMT(LogTemp, Warning, "HPBarClass fallback failed");
+			return;
+		}
+	}
+	//Set class for widget component to WBP EnemyHPBar
+	HPBarWidgetComponent->SetWidgetClass(HPBarClass);
 
 	//store HPBar so that it only needs to be casted once
 	HPBar = Cast<UEnemyHPBar>(HPBarWidgetComponent->GetUserWidgetObject());
 	if (HPBar == nullptr) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("HPBar failed to cast"));
+		return;
 	}
 	
 	HPBar->UpdateHPBar(healthCurrent, healthMax);

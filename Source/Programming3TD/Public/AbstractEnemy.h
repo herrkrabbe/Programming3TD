@@ -62,10 +62,14 @@ protected:
 	bool isAlive;
 
 	//DO not set in blueprints
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD")
 	UWidgetComponent* HPBarWidgetComponent;
 
+	//pointer to the HPBar held by HPBarWidgetComponent. Used to update the HPBar.
 	UEnemyHPBar* HPBar;
+
+	UPROPERTY(EditAnywhere, Category = "HUD")
+	TSubclassOf<UEnemyHPBar> HPBarClass;
 private:
 	FVector const HPBarPosition = FVector(0, 0, 100);
 
