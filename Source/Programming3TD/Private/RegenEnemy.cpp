@@ -12,13 +12,8 @@ void ARegenEnemy::Tick(float deltatime)
 	Super::Tick(deltatime);
 	if (!isAlive)
 		return;
-	RegenTimer -= deltatime;
 	
-	if (RegenTimer <= 0) 
-	{
-		RegenHP();
-		RegenTimer += 1;		
-	}
+	RegenHP(deltatime);
 }
 
 void ARegenEnemy::BeginPlay()
@@ -42,7 +37,7 @@ void ARegenEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 }
 
 
-void ARegenEnemy::RegenHP() 
+void ARegenEnemy::RegenHP(float deltaTime) 
 {
 	if (healthCurrent == healthMax)
 	{
@@ -51,16 +46,16 @@ void ARegenEnemy::RegenHP()
 		return;
 	}
 	
-	AfterRegenHP = healthCurrent + healthRegen;
+	float HealthRegained = healthRegen * deltaTime;
+	AfterRegenHP = healthCurrent + HealthRegained;
+
 	
 	if (AfterRegenHP > healthMax)
 	{
 		healthCurrent = healthMax;
-		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Healed max"));
 		return;
 	}
 
 	healthCurrent = AfterRegenHP;
-	//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Blue, TEXT("Recovered health"));
-
+	HPBar->UpdateHPBar(healthCurrent, healthMax);
 }

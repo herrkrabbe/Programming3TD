@@ -25,14 +25,14 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	void RegenHP();
+	void RegenHP(float deltaTime);
 	
 protected:
 
 	//int number for regen -healthregen
-	int64 healthRegen;
+	float healthRegen;
 	//Integer Placeholder for new hp value -healthregen
-	int64 AfterRegenHP;
+	float AfterRegenHP;
 
 	float RegenTimer;
 private:
