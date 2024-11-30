@@ -6,6 +6,8 @@
 #include <TDPlayerController.h>
 
 #include "Kismet/GameplayStatics.h"
+#include <Subsystems/PanelExtensionSubsystem.h>
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AAbstractEnemy::AAbstractEnemy()
@@ -14,6 +16,34 @@ AAbstractEnemy::AAbstractEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	OverlapSphere = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapSphere"));
 	OverlapSphere->InitSphereRadius(2.0f);
+	HPBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBar"));
+
+	if (HPBarWidgetComponent) //Setup HPBar Widget Component
+	{
+		HPBarWidgetComponent->SetupAttachment(RootComponent);
+		HPBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+		HPBarWidgetComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 50.0f));
+
+		//Set class for widget component to WBP EnemyHPBar
+		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
+		if (HPBarFile.Succeeded()) {
+			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
+			
+			//store HPBar so that it only needs to be casted once
+			UEnemyHPBar* const widget = Cast<UEnemyHPBar>(HPBarWidgetComponent->GetUserWidgetObject());
+			HPBar = widget;
+			if (HPBar == nullptr) {
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("HPBar failed to cast"));
+			}
+			
+		}
+		else {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("HPBarClass is not valid"));
+		}
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarWidgetComponent is not valid"));
+	}
 
 }
 
@@ -27,7 +57,14 @@ void AAbstractEnemy::BeginPlay()
 	healthMax = 1;
 	healthCurrent = healthMax;
 	DamageDealt = 5;
+
+	if (HPBar == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("BeginPlay No HP Bar"));
+		return;
+	}
 	
+	HPBar->UpdateHPBar(healthCurrent, healthMax);
 }
 
 void AAbstractEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
