@@ -47,14 +47,15 @@ void AAbstractEnemy::BeginPlay()
 	//Set class for widget component to WBP EnemyHPBar
 	if (HPBarClass == nullptr) //fallback option if HPBarClass is not set in editor
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass is not set for '{0}'", GetActorLabel()));
+		UE_LOGFMT(LogTemp, Warning, "HPBarClass is not set for '{0}'", GetActorLabel());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass is not set"));
 		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
 		if (HPBarFile.Succeeded()) {
 			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
 		}
 		else {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass fallback failed for '{0}'", GetActorLabel()));
-			UE_LOGFMT(LogTemp, Warning, "HPBarClass fallback failed");
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass fallback failed"));
+			UE_LOGFMT(LogTemp, Warning, "HPBarClass fallback failed for '{0}'", GetActorLabel());
 			return;
 		}
 	}
