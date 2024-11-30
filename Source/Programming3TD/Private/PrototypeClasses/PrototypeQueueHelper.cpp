@@ -32,6 +32,6 @@ void APrototypeQueueHelper::AddToQueue(AGraphNode* slot)
 
 void APrototypeQueueHelper::SetEnemyQueue(AAbstractEnemy* enemy)
 {
-	enemy->SetPathQueue(queue);
+	//enemy->SetPathQueue(queue);
 }
 

@@ -6,9 +6,10 @@
 #include "GameFramework/Actor.h"
 #include <GraphNode.h>
 #include "Containers/Deque.h"
-
+#include <PathQueue.h>
 #include <EnemyHPBar.h>
 #include "AbstractEnemy.generated.h"
+
 class USphereComponent;
 class UWidgetComponent;
 
@@ -41,7 +42,7 @@ protected:
 	* Don't change elements of this array directly, in case Unreal Engine
 	* does not make a clone of the array.
 	*/
-	TDeque<TObjectPtr<AGraphNode>> pathQueue;
+	PathQueue pathQueue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	double speed;
@@ -74,7 +75,7 @@ private:
 	FVector const HPBarPosition = FVector(0, 0, 100);
 
 public:
-	void SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue);
+	void SetPathQueue(PathQueue newPathQueue);
 
 	/*
 	* Function to attack this enemy.

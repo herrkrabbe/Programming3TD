@@ -6,6 +6,7 @@
 #include <ValueNode.h>
 #include <SearchNode.h>
 #include "Containers/Deque.h"
+#include "PathQueue.h"
 
 /**
  * 
@@ -30,5 +31,5 @@ public:
 	* @return A deque containing the path from start to end. Deque is empty if no path was found.
 
 	*/
-	static TDeque<TObjectPtr<AGraphNode>> FindPathMapImplementation(TObjectPtr<AGraphNode> startNode, TObjectPtr<AGraphNode> endNode);
+	static PathQueue FindPathMapImplementation(TObjectPtr<AGraphNode> startNode, TObjectPtr<AGraphNode> endNode);
 };

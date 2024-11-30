@@ -65,7 +65,7 @@ public:
 	bool bIsWaveActive = false;
 private:
 
-	TDeque<TObjectPtr<AGraphNode>> Path;
+	PathQueue Path;
 
 
 	float TimeUntilSpawn;

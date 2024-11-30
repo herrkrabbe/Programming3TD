@@ -66,9 +66,9 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 	return Path;
 }
 
-TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGraphNode> start, TObjectPtr<AGraphNode> end)
+PathQueue AStar::FindPathMapImplementation(TObjectPtr<AGraphNode> start, TObjectPtr<AGraphNode> end)
 {
-	TDeque<TObjectPtr<AGraphNode>> Path;
+	PathQueue pathQueue = PathQueue(0);
 
 	// PriorityQueue using BinaryHeap implementation
 	// Stores the nodes that are open to be evaluated
@@ -95,9 +95,12 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 		OpenQueue.HeapPopDiscard(); // Gets the top item in the open queue. O(log v) where v is number of items in the queue
 
 		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
+			int SizeOfPath = CurrentNode->GetDepth()+1;
+			pathQueue = PathQueue(SizeOfPath);
+
 			TObjectPtr<UValueNode> Current = CurrentNode;
 			while (Current != nullptr) {
-				Path.PushFirst(Current->GetState());
+				pathQueue.SetNode(Current->GetState(), Current->GetDepth());
 				Current = ParentMap[Current];
 			}
 			OpenQueue.Empty();
@@ -134,5 +137,7 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 		}
 	}
 
-	return Path;
+	UE_LOGFMT(LogTemp, Warning, "Deleting pathQueuePtr");
+
+	return pathQueue;
 }

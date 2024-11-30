@@ -199,7 +199,7 @@ bool AAbstractWaveManager::CreatePath()
 
 	Path = AStar::FindPathMapImplementation(StartNode, EndNode);
 
-	return !Path.IsEmpty();
+	return Path.RemainingNodes() > 0;
 }
 
 int64 AAbstractWaveManager::AddNewEnemiesToWave()

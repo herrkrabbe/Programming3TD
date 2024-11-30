@@ -30,7 +30,7 @@ public:
 	* newState is collecting the state of AGraphNode, transforming it to a new float for ValueNode.
 	* endCoordinates are the *new* heuristic values based on FVector:Dist("euclidean") 2 values, newStates location, and endCoordinates.
 	*/
-	UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f);
+	UValueNode(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f, int depth = 0);
 
 	/*
 	* Initialises the field variables of the ValueNode.
@@ -38,7 +38,7 @@ public:
 	* @param newState is the GraphNode the ValueNode represents.
 	* @param endCoordinates are the coordinates of the end node of the path.
 	*/
-	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f);
+	void Initialize(TObjectPtr<AGraphNode>newState, FVector endCoordinates, float extraCost = 0.0f, int depth = 0);
 	
 	TObjectPtr<AGraphNode>GetState() const { return State; };
 
@@ -72,10 +72,15 @@ public:
 	*/
 	void SetExtraCost(float extraCost);
 
+	/*
+	* Get the depth of the node.
+	*/
+	int GetDepth() const { return Depth; };
+
 private:
 	float heuristic;
 	float cost;
 	TObjectPtr<AGraphNode> State;
-
+	int Depth;
 };
 

@@ -75,7 +75,6 @@ void AAbstractEnemy::BeginPlay()
 void AAbstractEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-	pathQueue.Empty();
 }
 
 // Called every frame
@@ -90,12 +89,12 @@ void AAbstractEnemy::Tick(float DeltaTime)
 
 }
 
-void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue)
+void AAbstractEnemy::SetPathQueue(PathQueue newPathQueue)
 {
-	this->pathQueue = PathQueue;
+	this->pathQueue = newPathQueue;
 	if (pathQueue.IsEmpty()) {
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to set PathQueue"));
-
+		UE_LOGFMT(LogTemp, Fatal, "Failed to set path");
 	}
 }
 
@@ -120,7 +119,6 @@ void AAbstractEnemy::RemoveThis()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Wrong PlayerController is being used"));
 	}
 	isAlive = false;
-	pathQueue.Empty();
 }
 
 void AAbstractEnemy::Spawn()
@@ -132,13 +130,15 @@ void AAbstractEnemy::Spawn()
 	this->healthCurrent = this->healthMax;
 	this->isAlive = true;
 	this->queueIndex = 0;
-	this->SetActorLocation(this->pathQueue[0]->GetActorLocation());
+	TObjectPtr<AGraphNode> startNode = this->pathQueue.GetCurrentNode();
+	FVector startLocation = startNode->GetActorLocation();
+	this->SetActorLocation(startLocation);
 	HPBar->UpdateHPBar(healthCurrent, healthMax);
 }
 
 double AAbstractEnemy::DistanceToNextNode() const
 {
-	TObjectPtr<AGraphNode> nextNode = this->pathQueue[this->queueIndex];
+	TObjectPtr<AGraphNode> nextNode = pathQueue.GetCurrentNode();
 	return FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation());
 }
 
@@ -178,14 +178,14 @@ void AAbstractEnemy::MoveToNextNode(float DeltaTime)
 		this->RemoveThis();
 	}
 
-	TObjectPtr<AGraphNode> nextNode = this->pathQueue.First();
+	TObjectPtr<AGraphNode> nextNode = this->pathQueue.GetCurrentNode();
 	FVector direction = nextNode->GetActorLocation() - this->GetActorLocation();
 	direction.Normalize();
 	this->SetActorLocation(this->GetActorLocation() + direction * speed * DeltaTime);
 
 	if (FVector::Dist(this->GetActorLocation(), nextNode->GetActorLocation()) < 1)
 	{
-		this->pathQueue.PopFirst();
+		this->pathQueue.GoNextNode();
 	}
 
 	//There is also a check if queue is empty here, one of these is redundant, however I have yet to find out which one
