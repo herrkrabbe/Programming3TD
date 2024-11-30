@@ -31,10 +31,6 @@ protected:
 
 	//int number for regen -healthregen
 	float healthRegen;
-	//Integer Placeholder for new hp value -healthregen
-	float AfterRegenHP;
-
-	float RegenTimer;
 private:
 	
 

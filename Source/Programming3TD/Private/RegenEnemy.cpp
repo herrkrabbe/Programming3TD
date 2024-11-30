@@ -5,6 +5,12 @@
 
 ARegenEnemy::ARegenEnemy() : AAbstractEnemy()
 {
+	queueIndex = 0;
+	isAlive = false;
+	healthMax = 3;
+	healthCurrent = healthMax;
+	healthRegen = 1;
+	DamageDealt = 4;
 }
 
 void ARegenEnemy::Tick(float deltatime)
@@ -25,7 +31,6 @@ void ARegenEnemy::BeginPlay()
 	healthCurrent= healthMax;
 	healthRegen = 1;
 	DamageDealt = 4;
-	RegenTimer = 1;
 
 }
 
@@ -47,7 +52,7 @@ void ARegenEnemy::RegenHP(float deltaTime)
 	}
 	
 	float HealthRegained = healthRegen * deltaTime;
-	AfterRegenHP = healthCurrent + HealthRegained;
+	float AfterRegenHP = healthCurrent + HealthRegained;
 
 	
 	if (AfterRegenHP > healthMax)
