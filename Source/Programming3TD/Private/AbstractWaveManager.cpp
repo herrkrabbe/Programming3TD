@@ -49,7 +49,6 @@ void AAbstractWaveManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	StartNode = nullptr;
 	EndNode = nullptr;
 
-	UE_LOG(LogTemp, Warning, TEXT("Wave Manager EndPlay: Cleaned up wave resources"));
 	//remove all enemies. remove queues-- 
 	// empty path.q, empty newenemy.q, enemies in wavestack, dead enemy.stack 
 }
@@ -60,20 +59,16 @@ void AAbstractWaveManager::StartWave()
 	
 	if (StartNode == nullptr || EndNode == nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("start node or end node is missing"));
-		UE_LOG(LogTemp, Error, TEXT("StartNode is nullptr"));
 		return;
 	}
 
 	if (bIsWaveActive) //can't start wave if wave is already active
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, TEXT("wave is inactive"));
 		return;
 	}
 	
 	if (NewEnemiesQueue.IsEmpty()) //can't start a wave if the final wave has already been spawned
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("no enemies in queue"));
 		return;
 	}
 
@@ -143,14 +138,12 @@ void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enem
 	
 	if (enemyClass == nullptr) 
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Enemy class is nullptr"));
 		return;
 	}
 
 	UWorld* const World = GetWorld();
 	if (World == nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("World is nullptr"));
 		return;
 	}
 
@@ -161,7 +154,6 @@ void AAbstractWaveManager::AddNewEnemyFromClass(TSubclassOf<AAbstractEnemy> enem
 	AAbstractEnemy* enemy = World->SpawnActor<AAbstractEnemy>(enemyClass, GetActorLocation(), FRotator::ZeroRotator, ActorSpawnParams);
 
 	if (enemy == nullptr) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("failed to spawn"));
 	}
 
 	AddNewEnemy(enemy);
@@ -188,12 +180,10 @@ bool AAbstractWaveManager::CreatePath()
 {
 	if (StartNode == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("StartNode is nullptr"));
 		return false;
 	}
 	if (EndNode == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("EndNode is nullptr"));
 		return false;
 	}
 

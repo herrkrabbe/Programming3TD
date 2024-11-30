@@ -59,7 +59,6 @@ void ATDPlayerController::LoseHealth(int64 DamageTaken)
 	{
 		LoseGame();
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("still hanging on"));
 }
 
 void ATDPlayerController::LoseGame()
@@ -87,7 +86,6 @@ void ATDPlayerController::AddDeadEnemyToWaveManager(AAbstractEnemy* deadEnemy)
 {
 	if (!HasWaveManager())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("womp womp"));
 		return;
 	}
 
