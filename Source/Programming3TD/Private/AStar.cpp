@@ -31,7 +31,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
 			for (auto e : CostMap) {
-				UE_LOGFMT(LogTemp, Warning, "Key: `{0}`, Cost: `{1}`", *e.Key->GetName(), e.Value);
 			}
 			Path = CurrentNode->GetPath();
 			break;
@@ -43,11 +42,9 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
 			if (neighbour == CurrentNode->GetState()) {
-				UE_LOGFMT(LogTemp, Warning, "Neighbour is self. Skip");
 				continue; //skip if the neighbour is self
 			}
 			else {
-				UE_LOGFMT(LogTemp, Warning, "Current: {0}, Neighbour: {1}", CurrentNode->GetState()->GetName(), neighbour->GetName());
 			}
 			SearchNode neighbourNode(neighbour, end, identity, CurrentNode);
 			identity++;

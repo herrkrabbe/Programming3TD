@@ -51,7 +51,6 @@ void ATDPlayerCharacter::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("Something didn't work"));
 	}
 
 	//Saving Player Controller

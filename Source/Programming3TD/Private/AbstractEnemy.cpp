@@ -26,10 +26,6 @@ AAbstractEnemy::AAbstractEnemy()
 		HPBarWidgetComponent->SetRelativeLocation(HPBarPosition);
 	}
 
-	if (HPBarClass == nullptr)
-	{
-		UE_LOGFMT(LogTemp, Display, "HPBarClass null in constructor`");
-	}
 }
 
 // Called when the game starts or when spawned
@@ -87,10 +83,6 @@ void AAbstractEnemy::Tick(float DeltaTime)
 void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue)
 {
 	this->pathQueue = PathQueue;
-	if (pathQueue.IsEmpty()) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to set PathQueue"));
-
-	}
 }
 
 bool AAbstractEnemy::AttackThis(int64 damage)
@@ -109,10 +101,7 @@ void AAbstractEnemy::RemoveThis()
 {
 	if (TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
 		PlayerController->AddDeadEnemyToWaveManager(this);
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Wrong PlayerController is being used"));
-	}
+
 	isAlive = false;
 	pathQueue.Empty();
 }
@@ -120,7 +109,6 @@ void AAbstractEnemy::RemoveThis()
 void AAbstractEnemy::Spawn()
 {
 	if (pathQueue.IsEmpty()) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("PathQueue is empty!"));
 		return;
 	}
 	this->healthCurrent = this->healthMax;
