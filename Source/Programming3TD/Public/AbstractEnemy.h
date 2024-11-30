@@ -47,10 +47,10 @@ protected:
 	double speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int64 healthCurrent;
+	float healthCurrent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int64 healthMax;
+	float healthMax;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int64 DamageDealt;
