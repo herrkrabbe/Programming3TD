@@ -6,9 +6,11 @@
 #include "GameFramework/Actor.h"
 #include <GraphNode.h>
 #include "Containers/Deque.h"
-#include "AbstractEnemy.generated.h"
 
+#include <EnemyHPBar.h>
+#include "AbstractEnemy.generated.h"
 class USphereComponent;
+class UWidgetComponent;
 
 UCLASS(Abstract)
 class PROGRAMMING3TD_API AAbstractEnemy : public AActor
@@ -58,6 +60,18 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isAlive;
+
+	//DO not set in blueprints
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD")
+	UWidgetComponent* HPBarWidgetComponent;
+
+	//pointer to the HPBar held by HPBarWidgetComponent. Used to update the HPBar.
+	UEnemyHPBar* HPBar;
+
+	UPROPERTY(EditAnywhere, Category = "HUD")
+	TSubclassOf<UEnemyHPBar> HPBarClass;
+private:
+	FVector const HPBarPosition = FVector(0, 0, 100);
 
 public:
 	void SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue);

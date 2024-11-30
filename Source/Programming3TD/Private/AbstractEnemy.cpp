@@ -6,6 +6,8 @@
 #include <TDPlayerController.h>
 
 #include "Kismet/GameplayStatics.h"
+#include "Components/WidgetComponent.h"
+#include <Logging/StructuredLog.h>
 
 // Sets default values
 AAbstractEnemy::AAbstractEnemy()
@@ -14,6 +16,15 @@ AAbstractEnemy::AAbstractEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	OverlapSphere = CreateDefaultSubobject<USphereComponent>(TEXT("OverlapSphere"));
 	OverlapSphere->InitSphereRadius(2.0f);
+	this->RootComponent = OverlapSphere;
+	HPBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBar"));
+
+	if (HPBarWidgetComponent) //Setup HPBar Widget Component
+	{
+		HPBarWidgetComponent->SetupAttachment(RootComponent);
+		HPBarWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+		HPBarWidgetComponent->SetRelativeLocation(HPBarPosition);
+	}
 
 }
 
@@ -27,7 +38,28 @@ void AAbstractEnemy::BeginPlay()
 	healthMax = 1;
 	healthCurrent = healthMax;
 	DamageDealt = 5;
+
+	//Set class for widget component to WBP EnemyHPBar
+	if (HPBarClass == nullptr) //fallback option if HPBarClass is not set in editor
+	{
+		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
+		if (HPBarFile.Succeeded()) {
+			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
+		}
+		else {
+			return;
+		}
+	}
+	//Set class for widget component to WBP EnemyHPBar
+	HPBarWidgetComponent->SetWidgetClass(HPBarClass);
+
+	//store HPBar so that it only needs to be casted once
+	HPBar = Cast<UEnemyHPBar>(HPBarWidgetComponent->GetUserWidgetObject());
+	if (HPBar == nullptr) {
+		return;
+	}
 	
+	HPBar->UpdateHPBar(healthCurrent, healthMax);
 }
 
 void AAbstractEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -51,10 +83,6 @@ void AAbstractEnemy::Tick(float DeltaTime)
 void AAbstractEnemy::SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue)
 {
 	this->pathQueue = PathQueue;
-	if (pathQueue.IsEmpty()) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to set PathQueue"));
-
-	}
 }
 
 bool AAbstractEnemy::AttackThis(int64 damage)
@@ -62,8 +90,10 @@ bool AAbstractEnemy::AttackThis(int64 damage)
 	this->healthCurrent -= damage;
 	if (this->healthCurrent <= 0)
 	{
+		this->healthCurrent = 0;
 		RemoveThis();
 	}
+	HPBar->UpdateHPBar(healthCurrent, healthMax);
 	return !isAlive;
 }
 
@@ -71,10 +101,7 @@ void AAbstractEnemy::RemoveThis()
 {
 	if (TObjectPtr<ATDPlayerController> PlayerController = Cast<ATDPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0)))
 		PlayerController->AddDeadEnemyToWaveManager(this);
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Wrong PlayerController is being used"));
-	}
+
 	isAlive = false;
 	pathQueue.Empty();
 }
@@ -82,13 +109,13 @@ void AAbstractEnemy::RemoveThis()
 void AAbstractEnemy::Spawn()
 {
 	if (pathQueue.IsEmpty()) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("PathQueue is empty!"));
 		return;
 	}
 	this->healthCurrent = this->healthMax;
 	this->isAlive = true;
 	this->queueIndex = 0;
 	this->SetActorLocation(this->pathQueue[0]->GetActorLocation());
+	HPBar->UpdateHPBar(healthCurrent, healthMax);
 }
 
 double AAbstractEnemy::DistanceToNextNode() const

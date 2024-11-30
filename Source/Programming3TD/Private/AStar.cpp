@@ -31,7 +31,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 		if (CurrentNode->GetState() == end) { // target is found. Get path to end, and break the loop to return the path
 			for (auto e : CostMap) {
-				UE_LOGFMT(LogTemp, Warning, "Key: `{0}`, Cost: `{1}`", *e.Key->GetName(), e.Value);
 			}
 			Path = CurrentNode->GetPath();
 			break;
@@ -43,11 +42,9 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPath(TObjectPtr<AGraphNode> start, TOb
 
 		for (TObjectPtr<AGraphNode> neighbour : AdjacentNodes) {
 			if (neighbour == CurrentNode->GetState()) {
-				UE_LOGFMT(LogTemp, Warning, "Neighbour is self. Skip");
 				continue; //skip if the neighbour is self
 			}
 			else {
-				UE_LOGFMT(LogTemp, Warning, "Current: {0}, Neighbour: {1}", CurrentNode->GetState()->GetName(), neighbour->GetName());
 			}
 			SearchNode neighbourNode(neighbour, end, identity, CurrentNode);
 			identity++;
@@ -84,7 +81,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 	// Stores the states that have already been evaluated
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
 	CostMap.Add(start, start->GetThreatLevel());
-	GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Yellow, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *start->GetActorLabel(), startValueNode->GetCost(), CostMap[startValueNode->GetState()]));
 
 	// Stores the parent of each node
 	TMap<TObjectPtr<UValueNode>, TObjectPtr<UValueNode>> ParentMap;
@@ -125,10 +121,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 				CostMap.Add(neighbour, newCost);
 				OpenQueue.HeapPush(*neighbourValueNode);
 				ParentMap.Add(neighbourValueNode, CurrentNode);
-
-				if (neighbourValueNode->GetCost() != CostMap[neighbourValueNode->GetState()]) {
-					GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Green, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *neighbour->GetActorLabel(), neighbourValueNode->GetCost(), CostMap[neighbourValueNode->GetState()]));
-				}
 				
 			}
 		}
