@@ -66,6 +66,8 @@ protected:
 	UWidgetComponent* HPBarWidgetComponent;
 
 	UEnemyHPBar* HPBar;
+private:
+	FVector const HPBarPosition = FVector(0, 0, 100);
 
 public:
 	void SetPathQueue(TDeque<TObjectPtr<AGraphNode>> PathQueue);
