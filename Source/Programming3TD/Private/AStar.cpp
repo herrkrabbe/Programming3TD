@@ -84,7 +84,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 	// Stores the states that have already been evaluated
 	TMap<TObjectPtr<AGraphNode>, float> CostMap;
 	CostMap.Add(start, start->GetThreatLevel());
-	GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Yellow, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *start->GetActorLabel(), startValueNode->GetCost(), CostMap[startValueNode->GetState()]));
 
 	// Stores the parent of each node
 	TMap<TObjectPtr<UValueNode>, TObjectPtr<UValueNode>> ParentMap;
@@ -125,10 +124,6 @@ TDeque<TObjectPtr<AGraphNode>> AStar::FindPathMapImplementation(TObjectPtr<AGrap
 				CostMap.Add(neighbour, newCost);
 				OpenQueue.HeapPush(*neighbourValueNode);
 				ParentMap.Add(neighbourValueNode, CurrentNode);
-
-				if (neighbourValueNode->GetCost() != CostMap[neighbourValueNode->GetState()]) {
-					GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Green, FString::Printf(TEXT("Node: %s, Cost: %f, CostMap: %f"), *neighbour->GetActorLabel(), neighbourValueNode->GetCost(), CostMap[neighbourValueNode->GetState()]));
-				}
 				
 			}
 		}

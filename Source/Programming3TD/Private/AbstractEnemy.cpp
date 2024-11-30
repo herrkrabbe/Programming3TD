@@ -6,7 +6,6 @@
 #include <TDPlayerController.h>
 
 #include "Kismet/GameplayStatics.h"
-#include <Subsystems/PanelExtensionSubsystem.h>
 #include "Components/WidgetComponent.h"
 #include <Logging/StructuredLog.h>
 
@@ -47,15 +46,11 @@ void AAbstractEnemy::BeginPlay()
 	//Set class for widget component to WBP EnemyHPBar
 	if (HPBarClass == nullptr) //fallback option if HPBarClass is not set in editor
 	{
-		UE_LOGFMT(LogTemp, Warning, "HPBarClass is not set for '{0}'", GetActorLabel());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass is not set"));
 		static ConstructorHelpers::FClassFinder<UUserWidget> HPBarFile{ TEXT("/Game/HUD/WBP_EnemyHealthBar") };
 		if (HPBarFile.Succeeded()) {
 			HPBarWidgetComponent->SetWidgetClass(HPBarFile.Class);
 		}
 		else {
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HPBarClass fallback failed"));
-			UE_LOGFMT(LogTemp, Warning, "HPBarClass fallback failed for '{0}'", GetActorLabel());
 			return;
 		}
 	}
@@ -65,7 +60,6 @@ void AAbstractEnemy::BeginPlay()
 	//store HPBar so that it only needs to be casted once
 	HPBar = Cast<UEnemyHPBar>(HPBarWidgetComponent->GetUserWidgetObject());
 	if (HPBar == nullptr) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Purple, TEXT("HPBar failed to cast"));
 		return;
 	}
 	
