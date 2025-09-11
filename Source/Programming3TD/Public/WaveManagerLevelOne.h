@@ -20,7 +20,7 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-
+	//Hjelper førsteklasse med github
 private:
 	
 public:
