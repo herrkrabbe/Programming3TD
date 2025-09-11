@@ -28,6 +28,8 @@ public:
 	TSubclassOf<AAbstractEnemy> WeakEnemyClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Class")
 	TSubclassOf<AAbstractEnemy> StrongEnemyClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy Class")
+	TSubclassOf<AAbstractEnemy> RegenEnemyClass;
 };
 
 

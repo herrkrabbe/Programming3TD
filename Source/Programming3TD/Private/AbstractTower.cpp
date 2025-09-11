@@ -41,14 +41,7 @@ void AAbstractTower::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AAbstractTower::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-
-	//This gave false negatives, so it is currently disabled
-	/*if (bFromSweep == false)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Does not exist"));
-		return;
-	}
-	else */if (OtherActor == Cast<AAbstractEnemy>(OtherActor))
+	if (OtherActor == Cast<AAbstractEnemy>(OtherActor))
 	{
 		EnemiesList.PushLast(Cast<AAbstractEnemy>(OtherActor));
 		return;
